@@ -4,7 +4,7 @@ User Service - Data Models
 from pydantic import BaseModel, EmailStr, Field
 from typing import Optional
 from datetime import datetime
-from sqlalchemy import Column, String, Boolean, DateTime, JSON
+from sqlalchemy import Column, String, Boolean, DateTime
 from sqlalchemy.dialects.postgresql import UUID
 from database import Base
 import uuid
