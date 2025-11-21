@@ -422,8 +422,8 @@ services:
     depends_on:
       postgres-banking:
         condition: service_healthy
-      # jaeger:
-      #   condition: service_started
+      jaeger:
+        condition: service_started
     networks:
       - cuet-api-avengers
     restart: unless-stopped
@@ -491,7 +491,70 @@ services:
       - "service=api-gateway"
       - "version=v3"
 
-# # ==================== MONITORING ====================
+# ==================== MONITORING ====================
+
+  loki:
+    image: grafana/loki:3.0.0
+    container_name: loki-demo
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./loki-config.yml:/etc/loki/local-config.yaml
+      - loki_data:/loki
+    command: -config.file=/etc/loki/local-config.yaml
+    networks:
+      - cuet-api-avengers
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3100/ready"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+
+  promtail:
+    image: grafana/promtail:3.0.0
+    container_name: promtail-demo
+    volumes:
+      - ./promtail-config.yml:/etc/promtail/config.yml
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    command: -config.file=/etc/promtail/config.yml
+    networks:
+      - cuet-api-avengers
+    depends_on:
+      loki:
+        condition: service_healthy
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:11.0.0
+    container_name: grafana-demo
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_SERVER_ROOT_URL=http://localhost:3000
+      - GF_INSTALL_PLUGINS=grafana-clock-panel
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana-datasources.yml:/etc/grafana/provisioning/datasources/datasources.yml
+    depends_on:
+      loki:
+        condition: service_healthy
+      jaeger:
+        condition: service_started
+    networks:
+      - cuet-api-avengers
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+
+# # ==================== MONITORING (COMMENTED) ====================
 
 #   prometheus:
 #     image: prom/prometheus:latest

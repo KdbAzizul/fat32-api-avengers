@@ -11,3 +11,4 @@ opentelemetry-instrumentation-fastapi==0.42b0
 opentelemetry-instrumentation-sqlalchemy==0.42b0
 opentelemetry-exporter-jaeger-thrift==1.21.0
 python-dotenv==1.0.0
+structlog==23.2.0

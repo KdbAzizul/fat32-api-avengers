@@ -8,12 +8,14 @@ from opentelemetry.exporter.jaeger.thrift import JaegerExporter
 from opentelemetry.sdk.resources import Resource, SERVICE_NAME
 from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
 from opentelemetry.instrumentation.sqlalchemy import SQLAlchemyInstrumentor
+from opentelemetry.instrumentation.httpx import HTTPXClientInstrumentor
+import structlog
 import logging
-
-logger = logging.getLogger(__name__)
 
 # Disable verbose logging from OpenTelemetry
 logging.getLogger("opentelemetry").setLevel(logging.WARNING)
+
+logger = structlog.get_logger(__name__)
 
 
 def init_tracing(app, service_name: str = "payment-service", jaeger_endpoint: str = None):
@@ -64,17 +66,24 @@ def init_tracing(app, service_name: str = "payment-service", jaeger_endpoint: st
                 engine_hook=None
             )
         except Exception as db_error:
-            logger.warning(f"Failed to instrument SQLAlchemy: {db_error}")
+            logger.warning("Failed to instrument SQLAlchemy", error=str(db_error))
+        
+        # Instrument HTTPX for HTTP calls to banking-service
+        try:
+            HTTPXClientInstrumentor().instrument()
+        except Exception as http_error:
+            logger.warning("Failed to instrument HTTPX", error=str(http_error))
         
         logger.info(
-            f"OpenTelemetry tracing initialized successfully - "
-            f"Service: {service_name}, Jaeger: {jaeger_endpoint}"
+            "OpenTelemetry tracing initialized successfully",
+            service_name=service_name,
+            jaeger_endpoint=jaeger_endpoint
         )
         
         return True
         
     except Exception as e:
-        logger.error(f"Failed to initialize tracing: {e}", exc_info=True)
+        logger.error("Failed to initialize tracing", error=str(e), exc_info=True)
         # Don't fail startup if tracing fails
         return False
 

@@ -8,7 +8,7 @@ from opentelemetry.exporter.jaeger.thrift import JaegerExporter
 from opentelemetry.sdk.resources import Resource, SERVICE_NAME
 from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
 from opentelemetry.instrumentation.sqlalchemy import SQLAlchemyInstrumentor
-from opentelemetry.instrumentation.grpc import GrpcInstrumentorClient, GrpcAioInstrumentorClient
+from opentelemetry.instrumentation.grpc import GrpcAioInstrumentorClient
 from opentelemetry.instrumentation.httpx import HTTPXClientInstrumentor
 import structlog
 import logging
@@ -48,8 +48,15 @@ def init_tracing(app):
             )
         )
         
-        # Set global tracer provider
+        # Set global tracer provider FIRST - before instrumenting
         trace.set_tracer_provider(provider)
+        
+        # Instrument async gRPC client BEFORE any gRPC channels are created
+        try:
+            GrpcAioInstrumentorClient().instrument()
+            logger.info("gRPC async client instrumentation enabled")
+        except Exception as grpc_error:
+            logger.warning("Failed to instrument gRPC client", error=str(grpc_error))
         
         # Instrument FastAPI - exclude health and metrics endpoints
         FastAPIInstrumentor.instrument_app(
@@ -60,13 +67,7 @@ def init_tracing(app):
         # Instrument SQLAlchemy
         SQLAlchemyInstrumentor().instrument(engine_hook=None)
         
-        # Instrument sync gRPC client (if used)
-        GrpcInstrumentorClient().instrument()
-        
-        # Instrument async gRPC client (grpc.aio) - THIS IS WHAT WE USE
-        GrpcAioInstrumentorClient().instrument()
-        
-        # Instrument HTTPX client for HTTP calls to product-service
+        # Instrument HTTPX client for HTTP calls
         HTTPXClientInstrumentor().instrument()
         
         logger.info(

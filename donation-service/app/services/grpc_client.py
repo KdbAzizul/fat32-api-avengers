@@ -5,8 +5,11 @@ Based on: https://ssojet.com/grpc/use-grpc-in-fastapi/
 
 import grpc
 import structlog
+import sys
 from typing import Dict, Any
 from fastapi import HTTPException
+from opentelemetry import trace
+from opentelemetry.instrumentation.grpc import GrpcAioInstrumentorClient
 
 # Import generated gRPC classes
 from app.grpc.campaign import campaign_pb2, campaign_pb2_grpc
@@ -14,6 +17,9 @@ from app.core.config import get_settings
 
 logger = structlog.get_logger(__name__)
 settings = get_settings()
+
+# Get tracer for manual span creation if needed
+tracer = trace.get_tracer(__name__)
 
 class CampaignGRPCClient:
     """gRPC client for Campaign Service communication"""
@@ -28,6 +34,10 @@ class CampaignGRPCClient:
         """Async context manager entry"""
         self.channel = grpc.aio.insecure_channel(self.server_address)
         self.stub = campaign_pb2_grpc.CampaignServiceStub(self.channel)
+        
+        print(f"[gRPC CLIENT] 🔌 Connected to Campaign Service at {self.server_address}")
+        sys.stdout.flush()
+        
         return self
     
     async def __aexit__(self, exc_type, exc_val, exc_tb):
@@ -46,13 +56,15 @@ class CampaignGRPCClient:
                 campaign_id=campaign_id,
                 server=self.server_address
             )
+            print(f"[gRPC CLIENT] 📡 Calling CheckCampaignActive for campaign {campaign_id}")
+            sys.stdout.flush()
             
             # Create gRPC request
             request = campaign_pb2.CheckCampaignActiveRequest(
                 campaign_id=campaign_id
             )
             
-            # Make gRPC call
+            # Make gRPC call (instrumentation should automatically trace this)
             response = await self.stub.CheckCampaignActive(request)
             
             logger.info(
@@ -61,6 +73,8 @@ class CampaignGRPCClient:
                 is_active=response.is_active,
                 message=response.message
             )
+            print(f"[gRPC CLIENT] ✅ Response: is_active={response.is_active}, message={response.message}")
+            sys.stdout.flush()
             
             return {
                 "is_active": response.is_active,

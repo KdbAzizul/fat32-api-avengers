@@ -8,12 +8,13 @@ from opentelemetry.exporter.jaeger.thrift import JaegerExporter
 from opentelemetry.sdk.resources import Resource, SERVICE_NAME
 from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
 from opentelemetry.instrumentation.sqlalchemy import SQLAlchemyInstrumentor
+import structlog
 import logging
-
-logger = logging.getLogger(__name__)
 
 # Disable verbose logging from OpenTelemetry
 logging.getLogger("opentelemetry").setLevel(logging.WARNING)
+
+logger = structlog.get_logger(__name__)
 
 
 def init_tracing(app, service_name: str = "notification-service", jaeger_endpoint: str = None):
@@ -64,11 +65,12 @@ def init_tracing(app, service_name: str = "notification-service", jaeger_endpoin
                 engine_hook=None
             )
         except Exception as db_error:
-            logger.warning(f"Failed to instrument SQLAlchemy: {db_error}")
+            logger.warning("Failed to instrument SQLAlchemy", error=str(db_error))
         
         logger.info(
-            f"OpenTelemetry tracing initialized successfully - "
-            f"Service: {service_name}, Jaeger: {jaeger_endpoint}"
+            "OpenTelemetry tracing initialized successfully",
+            service_name=service_name,
+            jaeger_endpoint=jaeger_endpoint
         )
         
         return True
