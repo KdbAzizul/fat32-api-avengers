@@ -307,6 +307,7 @@ services:
     environment:
       DATABASE_URL: postgresql+asyncpg://payment_user:payment_pass@postgres-payment:5432/payment_db
       KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      BANKING_SERVICE_URL: http://banking-service:8006
       JAEGER_ENDPOINT: http://jaeger-demo:14268/api/traces
       TRACING_ENABLED: "true"
       SERVICE_NAME: "payment-service"

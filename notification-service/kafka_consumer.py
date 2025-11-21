@@ -12,7 +12,6 @@ from datetime import datetime
 logger = logging.getLogger(__name__)
 
 KAFKA_BOOTSTRAP_SERVERS = os.getenv("KAFKA_BOOTSTRAP_SERVERS", "kafka:9092")
-ORDER_EVENTS_TOPIC = "order.events"
 PAYMENT_EVENTS_TOPIC = "payment.events"
 DONATION_EVENTS_TOPIC = "donation_created"
 
@@ -35,12 +34,12 @@ class KafkaHandler:
             }
             
             self.consumer = Consumer(config)
-            self.consumer.subscribe([ORDER_EVENTS_TOPIC, PAYMENT_EVENTS_TOPIC, DONATION_EVENTS_TOPIC])
+            self.consumer.subscribe([PAYMENT_EVENTS_TOPIC, DONATION_EVENTS_TOPIC])
             
             self._connected = True
             self._running = True
             logger.info(f"Kafka consumer started, connected to {KAFKA_BOOTSTRAP_SERVERS}")
-            logger.info(f"Subscribed to topics: {ORDER_EVENTS_TOPIC}, {PAYMENT_EVENTS_TOPIC}, {DONATION_EVENTS_TOPIC}")
+            logger.info(f"Subscribed to topics: {PAYMENT_EVENTS_TOPIC}, {DONATION_EVENTS_TOPIC}")
         
         except Exception as e:
             logger.error(f"Failed to start Kafka consumer: {e}")
@@ -65,7 +64,7 @@ class KafkaHandler:
         logger.info("Starting Kafka event consumer...")
         
         # Import here to avoid circular dependency
-        from main import send_email_async, notification_log
+        from main import send_email_async
         
         try:
             while self._running:
@@ -92,13 +91,7 @@ class KafkaHandler:
                     
                     logger.info(f"Received Kafka event: {event_type}")
                     
-                    if event_type == "order.created":
-                        await self._handle_order_created(event, send_email_async)
-                    
-                    elif event_type == "order.cancelled":
-                        await self._handle_order_cancelled(event, send_email_async)
-                    
-                    elif event_type == "payment.completed":
+                    if event_type == "payment.completed":
                         await self._handle_payment_completed(event, send_email_async)
                     
                     elif event_type == "payment.failed":
@@ -107,55 +100,17 @@ class KafkaHandler:
                     elif event_type == "payment.refunded":
                         await self._handle_payment_refunded(event, send_email_async)
                     
+                    elif event_type == "payment.verified":
+                        await self._handle_payment_verified(event)
+                    
                     elif event_type == "donation_created":
-                        await self._handle_donation_created(event, notification_log)
+                        await self._handle_donation_created(event)
                 
                 except Exception as e:
                     logger.error(f"Error processing Kafka event: {e}", exc_info=True)
         
         except Exception as e:
             logger.error(f"Kafka consumer error: {e}", exc_info=True)
-    
-    async def _handle_order_created(self, event: dict, send_email_func):
-        """Handle order.created event - Send order confirmation"""
-        user_email = event.get("user_email")
-        order_id = event.get("order_id")
-        total_amount = event.get("total_amount")
-        currency = event.get("currency", "USD")
-        
-        if not user_email:
-            logger.warning(f"No email for order {order_id}")
-            return
-        
-        notification_id = f"notif-{datetime.utcnow().timestamp()}"
-        
-        subject = f"Order Confirmation - {order_id}"
-        body = f"""
-Thank you for your order!
-
-Order ID: {order_id}
-Total: {total_amount} {currency}
-
-Your order has been received and is being processed.
-We'll send you another notification when payment is confirmed.
-
-Thank you for shopping with us!
-        """
-        
-        await send_email_func(
-            to=user_email,
-            subject=subject,
-            body=body,
-            notification_id=notification_id,
-            notification_type="order_confirmation"
-        )
-        
-        logger.info(f"Sent order confirmation for {order_id} to {user_email}")
-    
-    async def _handle_order_cancelled(self, event: dict, send_email_func):
-        """Handle order.cancelled event"""
-        order_id = event.get("order_id")
-        logger.info(f"Order {order_id} cancelled - notification would be sent")
     
     async def _handle_payment_completed(self, event: dict, send_email_func):
         """Handle payment.completed event - Send payment confirmation"""
@@ -185,11 +140,66 @@ Thank you for shopping with us!
         logger.info(f"Payment {payment_id} refunded for order {order_id}")
         logger.info(f"Refund confirmation notification ready for order {order_id}")
     
-    async def _handle_donation_created(self, event: dict, notification_log_func):
-        """Handle donation_created event - Insert notification into database"""
-        from database import SessionLocal
+    async def _handle_payment_verified(self, event: dict):
+        """Handle payment.verified event - Insert payment verification notification"""
+        from database import AsyncSessionLocal
         from crud import create_notification
-        from models import NotificationChannel
+        from models import NotificationChannel, NotificationStatus
+        
+        payment_id = event.get("payment_id")
+        donation_id = event.get("donation_id")
+        user_id = event.get("user_id")
+        campaign_id = event.get("campaign_id")
+        amount = event.get("amount")
+        transaction_id = event.get("transaction_id")
+        
+        if not user_id or not payment_id:
+            logger.warning(f"Missing required fields in payment.verified event: {event}")
+            return
+        
+        # Create notification ID
+        notification_id = f"notif-payment-verified-{payment_id}-{datetime.utcnow().timestamp()}"
+        
+        # Create notification body
+        body = f"✅ Payment Verified!\n\n"
+        body += f"Your donation payment of ${amount:.2f} has been successfully verified and processed.\n\n"
+        body += f"Campaign ID: {campaign_id}\n"
+        body += f"Donation ID: {donation_id}\n"
+        body += f"Transaction ID: {transaction_id}\n"
+        body += f"Payment ID: {payment_id}\n\n"
+        body += "Thank you for your generous contribution!"
+        
+        # Insert notification into database
+        async with AsyncSessionLocal() as db:
+            try:
+                notification = await create_notification(
+                    db=db,
+                    notification_id=notification_id,
+                    user_id=user_id,
+                    notification_type="payment_verified",
+                    channel=NotificationChannel.IN_APP,
+                    body=body,
+                    status=NotificationStatus.PENDING,
+                    data={
+                        "payment_id": payment_id,
+                        "donation_id": donation_id,
+                        "campaign_id": campaign_id,
+                        "amount": amount,
+                        "transaction_id": transaction_id
+                    }
+                )
+                
+                logger.info(f"✅ Created payment verification notification {notification_id} for payment {payment_id}")
+                logger.info(f"📧 Notification saved - User: {user_id}, Donation: {donation_id}")
+            
+            except Exception as e:
+                logger.error(f"Failed to create payment verification notification: {e}", exc_info=True)
+    
+    async def _handle_donation_created(self, event: dict):
+        """Handle donation_created event - Insert notification into database"""
+        from database import AsyncSessionLocal
+        from crud import create_notification
+        from models import NotificationChannel, NotificationStatus
         
         donation_id = event.get("donation_id")
         user_id = event.get("user_id")
@@ -217,38 +227,28 @@ Thank you for shopping with us!
         body += f"\nStatus: {status}"
         
         # Insert notification into database
-        db = SessionLocal()
-        try:
-            notification = await create_notification(
-                db=db,
-                notification_id=notification_id,
-                user_id=user_id,
-                notification_type="donation_created",
-                channel=NotificationChannel.IN_APP,
-                body=body,
-                data={
-                    "donation_id": donation_id,
-                    "campaign_id": campaign_id,
-                    "amount": amount,
-                    "payment_method": payment_method,
-                    "is_anonymous": is_anonymous,
-                    "timestamp": timestamp
-                }
-            )
+        async with AsyncSessionLocal() as db:
+            try:
+                notification = await create_notification(
+                    db=db,
+                    notification_id=notification_id,
+                    user_id=user_id,
+                    notification_type="donation_created",
+                    channel=NotificationChannel.IN_APP,
+                    body=body,
+                    status=NotificationStatus.PENDING,
+                    data={
+                        "donation_id": donation_id,
+                        "campaign_id": campaign_id,
+                        "amount": amount,
+                        "payment_method": payment_method,
+                        "is_anonymous": is_anonymous,
+                        "timestamp": timestamp
+                    }
+                )
+                
+                logger.info(f"✅ Created notification {notification_id} for donation {donation_id}")
+                logger.info(f"📬 Notification saved to database - User: {user_id}, Amount: ${amount}")
             
-            logger.info(f"Created notification {notification_id} for donation {donation_id}")
-            
-            # Log notification
-            await notification_log_func(
-                notification_id=notification_id,
-                user_id=user_id,
-                notification_type="donation_created",
-                status="PENDING",
-                body=body
-            )
-        
-        except Exception as e:
-            logger.error(f"Failed to create notification for donation {donation_id}: {e}", exc_info=True)
-        
-        finally:
-            db.close()
+            except Exception as e:
+                logger.error(f"Failed to create notification for donation {donation_id}: {e}", exc_info=True)
