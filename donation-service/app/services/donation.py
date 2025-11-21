@@ -94,7 +94,7 @@ class DonationService:
             raise Exception(f"Failed to get donation: {str(e)}")
 
     @staticmethod
-    def get_donations_by_user(db: Session, user_id: int, skip: int = 0, limit: int = 100) -> List[DonationResponse]:
+    def get_donations_by_user(db: Session, user_id: str, skip: int = 0, limit: int = 100) -> List[DonationResponse]:
         """Get donations by user ID with pagination"""
         try:
             db_donations = db.query(Donation).filter(Donation.user_id == user_id).offset(skip).limit(limit).all()

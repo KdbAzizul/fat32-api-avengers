@@ -105,7 +105,7 @@ def get_donation(
 
 @router.get("/user/{user_id}", response_model=DonationListResponse)
 def get_donations_by_user(
-    user_id: int,
+    user_id: str,
     skip: int = Query(0, ge=0, description="Number of donations to skip"),
     limit: int = Query(100, ge=1, le=100, description="Number of donations to return"),
     db: Session = Depends(get_db)

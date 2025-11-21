@@ -27,9 +27,10 @@ class Settings(BaseSettings):
     jaeger_endpoint: str
     
     class Config:
-        # Look for .env.local file in the order-service directory
+        # Look for .env.local file in the donation-service directory
         env_file = os.path.join(Path(__file__).parent.parent.parent, ".env.local")
         case_sensitive = False
+        extra = "ignore"  # Ignore extra fields from env file
         
     def __post_init__(self):
         """Validate critical settings on startup"""

@@ -124,7 +124,6 @@ class CampaignGRPCClient:
             # Convert gRPC response to dictionary
             campaign_data = {
                 "id": response.id,
-                "campaign_id": response.campaign_id,
                 "title": response.title,
                 "name": response.name,
                 "description": response.description,
@@ -234,7 +233,6 @@ class CampaignGRPCClientSync:
             
             return {
                 "id": response.id,
-                "campaign_id": response.campaign_id,
                 "title": response.title,
                 "name": response.name,
                 "description": response.description,

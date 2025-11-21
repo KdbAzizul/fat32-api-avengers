@@ -2,7 +2,7 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-import campaign_pb2 as campaign__pb2
+from . import campaign_pb2 as campaign__pb2
 
 
 class CampaignServiceStub(object):

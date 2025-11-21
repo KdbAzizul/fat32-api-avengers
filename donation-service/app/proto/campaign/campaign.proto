@@ -15,7 +15,6 @@ message GetCampaignRequest {
 
 message GetCampaignResponse {
   int32 id = 1;
-  string campaign_id = 2;
   string title = 3;
   string name = 4;
   string description = 5;
