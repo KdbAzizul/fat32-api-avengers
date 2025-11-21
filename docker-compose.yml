@@ -163,7 +163,6 @@ services:
     depends_on:
       - redis
       - user-service
-      - demo-service
       - jaeger
     networks:
       - cuet-api-avengers
