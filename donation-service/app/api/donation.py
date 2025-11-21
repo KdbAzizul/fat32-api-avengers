@@ -5,6 +5,7 @@ from app.database.database import get_db
 from app.services.donation import DonationService
 from app.services.grpc_client import CampaignGRPCClient
 from app.schemas.donation import CreateDonationRequest, UpdateDonationRequest, DonationResponse, DonationListResponse
+from app.kafka.producer import get_kafka_producer, KafkaProducer
 import structlog
 
 router = APIRouter(prefix="/donations", tags=["donations"])
@@ -14,7 +15,8 @@ logger = structlog.get_logger(__name__)
 @router.post("", response_model=DonationResponse, status_code=201)
 async def create_donation(
     donation_data: CreateDonationRequest,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    kafka_producer: KafkaProducer = Depends(get_kafka_producer)
 ):
     """
     Create a new donation with gRPC campaign validation
@@ -61,6 +63,19 @@ async def create_donation(
             db=db, 
             donation_data=donation_data
         )
+        
+        # Step 3: Publish donation_created event to Kafka
+        await kafka_producer.publish_donation_created({
+            "id": donation.id,
+            "user_id": donation.user_id,
+            "campaign_id": donation.campaign_id,
+            "amount": donation.amount,
+            "status": donation.status.value,
+            "payment_method": donation.payment_method,
+            "is_anonymous": donation.is_anonymous,
+            "message": donation.message,
+            "created_at": donation.created_at.isoformat()
+        })
         
         logger.info(
             "Donation created successfully",
