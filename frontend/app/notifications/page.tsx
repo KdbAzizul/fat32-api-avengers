@@ -56,7 +56,7 @@ export default function NotificationsPage() {
   const fetchNotifications = async () => {
     try {
       const token = TokenManager.getToken();
-      const response = await fetch('http://localhost:8000/api/v1/notifications/my', {
+      const response = await fetch('https://teamfat32.duckdns.org/api/v1/notifications/my', {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -76,7 +76,7 @@ export default function NotificationsPage() {
   const fetchStats = async () => {
     try {
       const token = TokenManager.getToken();
-      const response = await fetch('http://localhost:8000/api/v1/notifications/stats', {
+      const response = await fetch('https://teamfat32.duckdns.org/api/v1/notifications/stats', {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -94,7 +94,7 @@ export default function NotificationsPage() {
   const markAllAsRead = async () => {
     try {
       const token = TokenManager.getToken();
-      const response = await fetch('http://localhost:8000/api/v1/notifications/read-all', {
+      const response = await fetch('https://teamfat32.duckdns.org/api/v1/notifications/read-all', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -113,7 +113,7 @@ export default function NotificationsPage() {
   const markAsRead = async (notificationId: string) => {
     try {
       const token = TokenManager.getToken();
-      const response = await fetch(`http://localhost:8000/api/v1/notifications/${notificationId}/read`, {
+      const response = await fetch(`https://teamfat32.duckdns.org/api/v1/notifications/${notificationId}/read`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,

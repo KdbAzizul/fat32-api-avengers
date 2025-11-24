@@ -376,3 +376,23 @@ spec:
     port: 3000
     targetPort: 3000
     protocol: TCP
+
+
+---
+# Grafana Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana-lb
+  namespace: default
+  labels:
+    app: grafana
+spec:
+  type: LoadBalancer  # Change to NodePort or ClusterIP if needed
+  selector:
+    app: grafana
+  ports:
+  - name: http
+    port: 3000
+    targetPort: 3000
+    protocol: TCP

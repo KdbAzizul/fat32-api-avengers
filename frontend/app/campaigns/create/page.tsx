@@ -69,7 +69,7 @@ export default function CreateCampaignPage() {
 
     try {
       const token = TokenManager.getToken();
-      const response = await fetch('http://localhost:8000/api/v1/campaigns', {
+      const response = await fetch('https://teamfat32.duckdns.org/api/v1/campaigns', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

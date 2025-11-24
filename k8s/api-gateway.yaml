@@ -25,15 +25,25 @@ spec:
         - name: JWT_SECRET
           value: "your_jwt_secret_key"
         - name: RATE_LIMIT_ENABLED
-          value: "true"
+          value: "false"
         - name: CACHE_ENABLED
-          value: "true"
+          value: "false"
         - name: CIRCUIT_BREAKER_ENABLED
           value: "true"
         - name: REDIS_URL
           value: "redis://redis:6379"
         - name: USER_SERVICE_URL
           value: "http://user-service-svc:8001"
+        - name: CAMPAIGN_SERVICE_URL
+          value: "http://campaign-service-svc:8002"
+        - name: DONATION_SERVICE_URL
+          value: "http://donation-service-svc:8004"
+        - name: NOTIFICATION_SERVICE_URL
+          value: "http://notification-service-svc:8005"
+        - name: PAYMENT_SERVICE_URL
+          value: "http://payment-service-svc:8003"
+        - name: BANKING_SERVICE_URL
+          value: "http://banking-service-svc:8006"
         
         resources:
           requests:
@@ -80,10 +90,10 @@ spec:
       name: cpu
       target:
         type: Utilization
-        averageUtilization: 70
+        averageUtilization: 80
   - type: Resource
     resource:
       name: memory
       target:
         type: Utilization
-        averageUtilization: 70
+        averageUtilization: 80

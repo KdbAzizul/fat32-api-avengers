@@ -39,7 +39,7 @@ export default function CampaignsPage() {
 
   const fetchCampaigns = async () => {
     try {
-      const response = await fetch('http://localhost:8000/api/v1/campaigns?skip=0&limit=50');
+      const response = await fetch('https://teamfat32.duckdns.org/api/v1/campaigns?skip=0&limit=50');
       if (response.ok) {
         const data = await response.json();
         setCampaigns(data);

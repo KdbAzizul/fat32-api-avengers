@@ -54,7 +54,7 @@ export default function DashboardPage() {
   const fetchDashboardData = async (token: string) => {
     try {
       // Fetch user's campaigns
-      const campaignsRes = await fetch('http://localhost:8000/api/v1/campaigns/my', {
+      const campaignsRes = await fetch('https://teamfat32.duckdns.org/api/v1/campaigns/my', {
         headers: { 'Authorization': `Bearer ${token}` },
       });
       if (campaignsRes.ok) {
@@ -62,7 +62,7 @@ export default function DashboardPage() {
       }
 
       // Fetch user's donations
-      const paymentsRes = await fetch('http://localhost:8000/api/v1/payments/my', {
+      const paymentsRes = await fetch('https://teamfat32.duckdns.org/api/v1/payments/my', {
         headers: { 'Authorization': `Bearer ${token}` },
       });
       if (paymentsRes.ok) {
@@ -70,7 +70,7 @@ export default function DashboardPage() {
       }
 
       // Fetch unread notifications count
-      const notifRes = await fetch('http://localhost:8000/api/v1/notifications/unread', {
+      const notifRes = await fetch('https://teamfat32.duckdns.org/api/v1/notifications/unread', {
         headers: { 'Authorization': `Bearer ${token}` },
       });
       if (notifRes.ok) {

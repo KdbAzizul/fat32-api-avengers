@@ -16,12 +16,12 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: sleepytmzd/frontend:v11
+        image: sleepytmzd/frontend:v12
         ports:
         - containerPort: 3000
         env:
         - name: NEXT_PUBLIC_API_GATEWAY_URL
-          value: ""
+          value: "https://teamfat32.duckdns.org"
               
         resources:
           requests:

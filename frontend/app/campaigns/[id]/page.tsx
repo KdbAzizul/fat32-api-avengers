@@ -56,7 +56,7 @@ export default function CampaignDetailPage() {
 
   const fetchCampaignDetails = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/api/v1/campaigns/${campaignId}`);
+      const response = await fetch(`https://teamfat32.duckdns.org/api/v1/campaigns/${campaignId}`);
       if (response.ok) {
         const data = await response.json();
         setCampaign(data);
@@ -73,7 +73,7 @@ export default function CampaignDetailPage() {
 
   const fetchPayments = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/api/v1/payments/campaign/${campaignId}`);
+      const response = await fetch(`https://teamfat32.duckdns.org/api/v1/payments/campaign/${campaignId}`);
       if (response.ok) {
         const data = await response.json();
         setPayments(data);
@@ -101,7 +101,7 @@ export default function CampaignDetailPage() {
 
     try {
       const token = TokenManager.getToken();
-      const response = await fetch('http://localhost:8000/api/v1/payments', {
+      const response = await fetch('https://teamfat32.duckdns.org/api/v1/payments', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

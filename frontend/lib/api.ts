@@ -1,5 +1,5 @@
 // API client configuration
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+const API_BASE_URL = 'https://teamfat32.duckdns.org';
 
 export interface LoginCredentials {
   email: string;

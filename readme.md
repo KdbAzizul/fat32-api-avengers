@@ -24,6 +24,9 @@
 - [Infrastructure Components](#-infrastructure-components)
 - [Observability Stack](#-observability-stack)
 - [Getting Started](#-getting-started)
+- [Kubernetes Deployment](#-kubernetes-deployment)
+- [CI/CD Pipeline](#-cicd-pipeline)
+- [Demo Screenshots](#-demo-screenshots)
 - [API Documentation](#-api-documentation)
 - [System Features](#-system-features)
 
@@ -563,6 +566,272 @@ docker-compose down
 docker-compose down -v
 rm -rf data/
 ```
+
+---
+
+## ☸️ Kubernetes Deployment
+
+### **Production Deployment on DigitalOcean**
+
+The CareForAll platform is deployed on a production-grade Kubernetes cluster with enterprise features:
+
+**🎯 Key Features**:
+- ✅ **Horizontal Pod Autoscaling (HPA)**: Automatic scaling based on CPU/Memory utilization
+- ✅ **TLS Termination**: HTTPS encryption with Let's Encrypt certificates
+- ✅ **Ingress Controller**: NGINX ingress for intelligent routing
+- ✅ **StatefulSets**: For Kafka, Zookeeper, and PostgreSQL databases
+- ✅ **Persistent Volumes**: Durable storage for databases and logs
+- ✅ **Resource Limits**: CPU/Memory limits per service
+- ✅ **Health Checks**: Liveness and readiness probes
+- ✅ **Rolling Updates**: Zero-downtime deployments
+
+### **Cluster Architecture**
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                 DigitalOcean Kubernetes                  │
+│                                                          │
+│  ┌────────────────────────────────────────────────┐    │
+│  │           NGINX Ingress Controller              │    │
+│  │         (teamfat32.duckdns.org)                 │    │
+│  │              TLS/HTTPS Enabled                  │    │
+│  └────────────────┬───────────────────────────────┘    │
+│                   │                                      │
+│  ┌────────────────┴───────────────────────────────┐    │
+│  │           API Gateway (LoadBalancer)            │    │
+│  │              Port 8000 (HTTPS)                  │    │
+│  └────────────────┬───────────────────────────────┘    │
+│                   │                                      │
+│  ┌────────────────┴───────────────────────────────┐    │
+│  │              Microservices Layer                │    │
+│  │  ┌──────────┐ ┌──────────┐ ┌──────────┐       │    │
+│  │  │  User    │ │ Campaign │ │ Donation │       │    │
+│  │  │ Service  │ │ Service  │ │ Service  │       │    │
+│  │  └──────────┘ └──────────┘ └──────────┘       │    │
+│  │  ┌──────────┐ ┌──────────┐ ┌──────────┐       │    │
+│  │  │ Payment  │ │ Banking  │ │  Notify  │       │    │
+│  │  │ Service  │ │ Service  │ │ Service  │       │    │
+│  │  └──────────┘ └──────────┘ └──────────┘       │    │
+│  └────────────────────────────────────────────────┘    │
+│                                                          │
+│  ┌────────────────────────────────────────────────┐    │
+│  │          Infrastructure Services                │    │
+│  │  • Kafka (StatefulSet)                          │    │
+│  │  • PostgreSQL Databases (StatefulSet x6)        │    │
+│  │  • Redis (Deployment)                           │    │
+│  │  • Prometheus (StatefulSet)                     │    │
+│  │  • Grafana (Deployment)                         │    │
+│  └────────────────────────────────────────────────┘    │
+└─────────────────────────────────────────────────────────┘
+```
+
+### **Deployment Manifests**
+
+All Kubernetes manifests are located in the `/k8s` folder:
+
+### **Horizontal Pod Autoscaling (HPA)**
+
+All microservices are configured with HPA for automatic scaling:
+
+**Scaling Behavior**:
+- **API Gateway**: 2-10 replicas (scales at 70% CPU)
+- **Microservices**: 2-8 replicas (scales at 70% CPU)
+- **Scale-up**: 1 pod every 30 seconds
+- **Scale-down**: 1 pod every 5 minutes (stabilization)
+
+### **TLS/HTTPS Configuration**
+
+TLS termination is handled by cert-manager with Let's Encrypt:
+
+**Features**:
+- Automatic certificate generation and renewal
+- HTTP to HTTPS redirect
+- TLS 1.2+ only
+- Production-grade Let's Encrypt certificates
+
+### **Deploy to Kubernetes**
+
+```bash
+# Apply all manifests
+kubectl apply -f k8s/
+
+# Check deployment status
+kubectl get pods -n default
+
+# View HPA status
+kubectl get hpa
+
+# Check ingress
+kubectl get ingress
+
+# View logs
+kubectl logs -f deployment/api-gateway
+
+# Scale manually (if needed)
+kubectl scale deployment/api-gateway --replicas=5
+```
+
+### **Access Production Services**
+
+- **Frontend**: https://teamfat32.duckdns.org
+- **API Gateway**: https://teamfat32.duckdns.org/api
+
+---
+
+## 🚀 CI/CD Pipeline
+
+### **Automated Deployment Workflow**
+
+The project uses GitHub Actions for intelligent CI/CD with change detection:
+
+**📦 Pipeline Features**:
+- ✅ **Change Detection**: Only build/test modified services using `dorny/paths-filter`
+- ✅ **Parallel Testing**: 8 concurrent test jobs for each service
+- ✅ **Docker Multi-arch Builds**: AMD64 and ARM64 support
+- ✅ **Image Tagging**: Semantic versioning with Git SHA tags
+- ✅ **Automated Deployment**: Push to DigitalOcean Kubernetes
+- ✅ **Rollout Verification**: Ensures successful deployment
+- ✅ **Rollback on Failure**: Automatic rollback if deployment fails
+
+### **Workflow Structure**
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                  GitHub Actions Workflow                 │
+└─────────────────────────────────────────────────────────┘
+                           │
+          ┌────────────────┴────────────────┐
+          ▼                                  ▼
+    Detect Changes                     Run Tests (Parallel)
+  (dorny/paths-filter)                       │
+          │                    ┌─────────────┼─────────────┐
+          │                    ▼             ▼             ▼
+          │              test-user    test-campaign  test-donation
+          │              test-payment test-banking   test-notify
+          │              test-api-gw  test-frontend
+          │                    │
+          └────────────────────┴─────────────┐
+                                             ▼
+                                    Build Docker Images
+                                  (only changed services)
+                                             │
+                                             ▼
+                                    Push to DockerHub
+                                             │
+                                             ▼
+                                   Deploy to Kubernetes
+                                             │
+                                             ▼
+                                   Verify Rollout Status
+```
+
+### **CI/CD Configuration**
+
+Workflow files are in the `/.github/workflows` directory:
+
+### **Main Pipeline (cicd.yml)**
+
+**Trigger Conditions**:
+- Push to `main` or `develop` branches
+- Pull requests to `main`
+- Manual workflow dispatch
+
+**Pipeline Stages**:
+
+1. **Detect Changes** (30s)
+   - Uses `dorny/paths-filter@v2`
+   - Outputs boolean flags for each service
+
+2. **Run Tests** (2-5 minutes per service)
+   - Parallel execution (8 jobs)
+   - Only runs if service changed
+   - Runs unit + integration tests
+   - Generates coverage reports
+
+3. **Build Docker Images** (5-10 minutes)
+   - Only builds changed services
+   - Multi-stage builds for optimization
+   - Tags: `latest`, `v{version}`, `sha-{git-sha}`
+   - Caches layers for faster builds
+
+4. **Push to Registry** (2-3 minutes)
+   - Pushes to DockerHub
+   - Credentials from GitHub Secrets
+   - Retries on failure (3 attempts)
+
+5. **Deploy to Kubernetes** (3-5 minutes)
+   - Updates deployment with new image
+   - Rolling update strategy
+   - Waits for rollout completion
+   - Automatic rollback on failure
+
+### **Branch Protection Rules**
+
+For production deployments, branch protection is configured:
+- ✅ Require pull request reviews (1 reviewer)
+- ✅ Require status checks to pass (all test jobs)
+- ✅ Require branches to be up to date
+- ✅ Require conversation resolution
+- ✅ Enforce for administrators
+
+See `BRANCH_PROTECTION_SETUP.md` for detailed setup instructions.
+
+### **GitHub Secrets Required**
+
+```bash
+# Docker Hub credentials
+DOCKERHUB_USERNAME=sleepytmzd
+DOCKERHUB_TOKEN=<your-token>
+
+# DigitalOcean credentials
+DIGITALOCEAN_ACCESS_TOKEN=<your-token>
+DO_CLUSTER_NAME=careforall-cluster
+```
+
+---
+
+## 📸 Demo Screenshots
+
+### **Infrastructure & Deployment**
+
+#### **DigitalOcean Kubernetes Cluster**
+![DigitalOcean Cluster](images/digitalocean%20cluster.png)
+
+#### **Cluster Insights & Metrics**
+![DigitalOcean Insights](images/digitalocean%20insights.png)
+
+#### **Kubernetes Deployment Dashboard**
+![Kubernetes Deployment](images/kubernetes%20deployment.png)
+
+#### **Docker Compose Local Setup**
+![Docker Compose](images/docker%20compose.jpg)
+
+---
+
+### **Observability & Monitoring**
+
+#### **Grafana Monitoring Dashboard**
+![Grafana Monitoring](images/grafana%20monitoring.png)
+
+#### **Jaeger Distributed Tracing**
+![Jaeger Tracing](images/jaegar%20tracing.jpg)
+
+#### **Loki Log Aggregation**
+![Loki Logging](images/loki%20logging.jpg)
+
+---
+
+### **Event-Driven Architecture**
+
+#### **Kafka Topics & Messages**
+![Kafka](images/kafka.jpg)
+
+---
+
+### **CI/CD & DevOps**
+
+#### **GitHub Actions CI/CD Pipeline**
+![CI/CD Pipeline](images/cicd%20pipeline.png)
 
 ---
 
