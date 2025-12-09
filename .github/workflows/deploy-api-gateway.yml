@@ -2,7 +2,7 @@ name: Deploy API Gateway
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "pavel" ]
     paths:
       - 'api-gateway/**'
 

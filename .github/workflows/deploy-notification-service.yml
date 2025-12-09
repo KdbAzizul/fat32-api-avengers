@@ -2,7 +2,7 @@ name: Deploy Notification Service
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "pavel" ]
     paths:
       - 'notification-service/**'
 

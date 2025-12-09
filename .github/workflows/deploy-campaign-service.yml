@@ -2,7 +2,7 @@ name: Deploy Campaign Service
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "pavel" ]
     paths:
       - 'campaign-service/**'
 

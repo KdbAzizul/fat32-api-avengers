@@ -2,7 +2,7 @@ name: Deploy Donation Service
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "pavel" ]
     paths:
       - 'donation-service/**'
 

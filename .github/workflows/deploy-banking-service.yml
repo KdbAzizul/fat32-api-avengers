@@ -2,7 +2,7 @@ name: Deploy Banking Service
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "pavel" ]
     paths:
       - 'banking-service/**'
 

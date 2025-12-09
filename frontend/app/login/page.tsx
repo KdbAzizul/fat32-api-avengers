@@ -43,7 +43,7 @@ export default function LoginPage() {
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold">Login</CardTitle>
           <CardDescription>
-            Enter your email and password to access your account
+            Enter your email and password to access your account2222
           </CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>

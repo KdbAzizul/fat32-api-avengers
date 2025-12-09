@@ -2,7 +2,7 @@ name: Deploy Payment Service
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "pavel" ]
     paths:
       - 'payment-service/**'
 
