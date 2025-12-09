@@ -92,7 +92,11 @@ spec:
             - name: POSTGRES_HOST
               value: "campaign-db"
             - name: DATABASE_URL
-              value: "postgresql+asyncpg://postgres:secure_password_123@campaign-db:5432/campaigndb"  
+              value: "postgresql+asyncpg://postgres:secure_password_123@campaign-db:5432/campaigndb" 
+            - name: REDIS_URL
+              value: "redis://redis:6379"
+            - name: JAEGER_ENDPOINT
+              value: "http://jaeger:14268/api/traces"   
 
 # --- Donation Service ---
 ---
@@ -141,6 +145,10 @@ spec:
               value: "postgresql+asyncpg://postgres:secure_password_123@donation-db:5432/donation_db"  
             - name: CAMPAIGN_GRPC_HOST
               value: "campaign-service"
+            - name: KAFKA_BOOTSTRAP_SERVERS
+              value: "kafka:9092"
+            - name: JAEGER_ENDPOINT
+              value: "http://jaeger:14268/api/traces"  
 
 # --- Payment Service ---
 ---
@@ -186,7 +194,11 @@ spec:
             - name: POSTGRES_HOST
               value: "payment-db"
             - name: DATABASE_URL
-              value: "postgresql+asyncpg://postgres:secure_password_123@payment-db:5432/payment_db"  
+              value: "postgresql+asyncpg://postgres:secure_password_123@payment-db:5432/payment_db"
+            - name: KAFKA_BOOTSTRAP_SERVERS
+              value: "kafka:9092"
+            - name: JAEGER_ENDPOINT
+              value: "http://jaeger:14268/api/traces"    
 
 # --- Notification Service ---
 ---
@@ -232,7 +244,11 @@ spec:
             - name: POSTGRES_HOST
               value: "notification-db"
             - name: DATABASE_URL
-              value: "postgresql+asyncpg://postgres:secure_password_123@notification-db:5432/notification_db"  
+              value: "postgresql+asyncpg://postgres:secure_password_123@notification-db:5432/notification_db" 
+            - name: KAFKA_BOOTSTRAP_SERVERS
+              value: "kafka:9092"
+            - name: JAEGER_ENDPOINT
+              value: "http://jaeger:14268/api/traces"   
 
 # --- Banking Service ---
 ---
@@ -279,6 +295,8 @@ spec:
               value: "banking-db"
             - name: DATABASE_URL
               value: "postgresql+asyncpg://postgres:secure_password_123@banking-db:5432/banking_db"  
+            - name: JAEGER_ENDPOINT
+              value: "http://jaeger:14268/api/traces"  
 
 # --- API Gateway ---
 ---
