@@ -1,0 +1,376 @@
+# --- Database Template for all 6 DBs ---
+# Repeat this pattern for: user-db, payment-db, donation-db, payment-db, banking-db, notification-db
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-db
+  namespace: careforall
+spec:
+  ports:
+    - port: 5432
+  selector:
+    app: user-db
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-db
+  namespace: careforall
+spec:
+  selector:
+    matchLabels:
+      app: user-db
+  template:
+    metadata:
+      labels:
+        app: user-db
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:15-alpine
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_DB
+              value: userdb
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - name: db-data
+              mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: db-data
+          persistentVolumeClaim:
+            claimName: user-db-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: user-db-pvc
+  namespace: careforall
+spec:
+  accessModes: [ "ReadWriteOnce" ]
+  resources:
+    requests:
+      storage: 1Gi
+---
+# --- Campaign DB ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: campaign-db
+  namespace: careforall
+spec:
+  ports:
+    - port: 5432
+  selector:
+    app: campaign-db
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: campaign-db
+  namespace: careforall
+spec:
+  selector:
+    matchLabels:
+      app: campaign-db
+  template:
+    metadata:
+      labels:
+        app: campaign-db
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:15-alpine
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_DB
+              value: campaigndb
+          volumeMounts:
+            - name: db-data
+              mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: db-data
+          persistentVolumeClaim:
+            claimName: campaign-db-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: campaign-db-pvc
+  namespace: careforall
+spec:
+  accessModes: [ "ReadWriteOnce" ]
+  resources:
+    requests:
+      storage: 1Gi
+
+
+
+# --- Donation DB ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: donation-db
+  namespace: careforall
+spec:
+  ports:
+    - port: 5432
+  selector:
+    app: donation-db
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: donation-db
+  namespace: careforall
+spec:
+  selector:
+    matchLabels:
+      app: donation-db
+  template:
+    metadata:
+      labels:
+        app: donation-db
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:15-alpine
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_DB
+              value: donationdb
+          volumeMounts:
+            - name: db-data
+              mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: db-data
+          persistentVolumeClaim:
+            claimName: donation-db-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: donation-db-pvc
+  namespace: careforall
+spec:
+  accessModes: [ "ReadWriteOnce" ]
+  resources:
+    requests:
+      storage: 1Gi
+
+
+# --- Payment DB ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: payment-db
+  namespace: careforall
+spec:
+  ports:
+    - port: 5432
+  selector:
+    app: payment-db
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment-db
+  namespace: careforall
+spec:
+  selector:
+    matchLabels:
+      app: payment-db
+  template:
+    metadata:
+      labels:
+        app: payment-db
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:15-alpine
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_DB
+              value: paymentdb
+          volumeMounts:
+            - name: db-data
+              mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: db-data
+          persistentVolumeClaim:
+            claimName: payment-db-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: payment-db-pvc
+  namespace: careforall
+spec:
+  accessModes: [ "ReadWriteOnce" ]
+  resources:
+    requests:
+      storage: 1Gi
+
+# --- Banking DB ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: banking-db
+  namespace: careforall
+spec:
+  ports:
+    - port: 5432
+  selector:
+    app: banking-db
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: banking-db
+  namespace: careforall
+spec:
+  selector:
+    matchLabels:
+      app: banking-db
+  template:
+    metadata:
+      labels:
+        app: banking-db
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:15-alpine
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_DB
+              value: bankingdb
+          volumeMounts:
+            - name: db-data
+              mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: db-data
+          persistentVolumeClaim:
+            claimName: banking-db-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: banking-db-pvc
+  namespace: careforall
+spec:
+  accessModes: [ "ReadWriteOnce" ]
+  resources:
+    requests:
+      storage: 1Gi
+
+
+# --- Notification DB ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: notification-db
+  namespace: careforall
+spec:
+  ports:
+    - port: 5432
+  selector:
+    app: notification-db
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notification-db
+  namespace: careforall
+spec:
+  selector:
+    matchLabels:
+      app: notification-db
+  template:
+    metadata:
+      labels:
+        app: notification-db
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:15-alpine
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_DB
+              value: notificationdb
+          volumeMounts:
+            - name: db-data
+              mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: db-data
+          persistentVolumeClaim:
+            claimName: notification-db-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: notification-db-pvc
+  namespace: careforall
+spec:
+  accessModes: [ "ReadWriteOnce" ]
+  resources:
+    requests:
+      storage: 1Gi
+
+# Note: Repeat similar blocks for donation-db, payment-db, banking-db, notification-db
+# modifying the 'name', 'app' labels, and 'POSTGRES_DB' value accordingly.
