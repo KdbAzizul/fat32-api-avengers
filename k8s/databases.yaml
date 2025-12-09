@@ -1,6 +1,4 @@
-# --- Database Template for all 6 DBs ---
-# Repeat this pattern for: user-db, payment-db, donation-db, payment-db, banking-db, notification-db
-
+# --- User DB ---
 apiVersion: v1
 kind: Service
 metadata:
@@ -29,41 +27,25 @@ spec:
       containers:
         - name: postgres
           image: postgres:15-alpine
+          envFrom:
+             - configMapRef:
+                 name: app-config
+             - secretRef:
+                 name: app-secrets
           env:
-            - name: POSTGRES_USER
-              valueFrom:
-                configMapKeyRef:
-                  name: app-config
-                  key: POSTGRES_USER
-            - name: POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: app-secrets
-                  key: POSTGRES_PASSWORD
             - name: POSTGRES_DB
               value: userdb
-          ports:
-            - containerPort: 5432
           volumeMounts:
             - name: db-data
               mountPath: /var/lib/postgresql/data
+              subPath: user-data  # <--- CRITICAL: Keeps user data separate
       volumes:
         - name: db-data
           persistentVolumeClaim:
-            claimName: user-db-pvc
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: user-db-pvc
-  namespace: careforall
-spec:
-  accessModes: [ "ReadWriteOnce" ]
-  resources:
-    requests:
-      storage: 1Gi
----
+            claimName: shared-db-pvc # <--- Pointing to the SINGLE shared claim
+
 # --- Campaign DB ---
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -92,41 +74,25 @@ spec:
       containers:
         - name: postgres
           image: postgres:15-alpine
+          envFrom:
+             - configMapRef:
+                 name: app-config
+             - secretRef:
+                 name: app-secrets
           env:
-            - name: POSTGRES_USER
-              valueFrom:
-                configMapKeyRef:
-                  name: app-config
-                  key: POSTGRES_USER
-            - name: POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: app-secrets
-                  key: POSTGRES_PASSWORD
             - name: POSTGRES_DB
               value: campaigndb
           volumeMounts:
             - name: db-data
               mountPath: /var/lib/postgresql/data
+              subPath: campaign-data # <--- Different subPath
       volumes:
         - name: db-data
           persistentVolumeClaim:
-            claimName: campaign-db-pvc
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: campaign-db-pvc
-  namespace: careforall
-spec:
-  accessModes: [ "ReadWriteOnce" ]
-  resources:
-    requests:
-      storage: 1Gi
-
-
+            claimName: shared-db-pvc
 
 # --- Donation DB ---
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -155,40 +121,25 @@ spec:
       containers:
         - name: postgres
           image: postgres:15-alpine
+          envFrom:
+             - configMapRef:
+                 name: app-config
+             - secretRef:
+                 name: app-secrets
           env:
-            - name: POSTGRES_USER
-              valueFrom:
-                configMapKeyRef:
-                  name: app-config
-                  key: POSTGRES_USER
-            - name: POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: app-secrets
-                  key: POSTGRES_PASSWORD
             - name: POSTGRES_DB
-              value: donationdb
+              value: donation_db
           volumeMounts:
             - name: db-data
               mountPath: /var/lib/postgresql/data
+              subPath: donation-data # <--- Different subPath
       volumes:
         - name: db-data
           persistentVolumeClaim:
-            claimName: donation-db-pvc
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: donation-db-pvc
-  namespace: careforall
-spec:
-  accessModes: [ "ReadWriteOnce" ]
-  resources:
-    requests:
-      storage: 1Gi
-
+            claimName: shared-db-pvc
 
 # --- Payment DB ---
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -217,39 +168,25 @@ spec:
       containers:
         - name: postgres
           image: postgres:15-alpine
+          envFrom:
+             - configMapRef:
+                 name: app-config
+             - secretRef:
+                 name: app-secrets
           env:
-            - name: POSTGRES_USER
-              valueFrom:
-                configMapKeyRef:
-                  name: app-config
-                  key: POSTGRES_USER
-            - name: POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: app-secrets
-                  key: POSTGRES_PASSWORD
             - name: POSTGRES_DB
-              value: paymentdb
+              value: payment_db
           volumeMounts:
             - name: db-data
               mountPath: /var/lib/postgresql/data
+              subPath: payment-data # <--- Different subPath
       volumes:
         - name: db-data
           persistentVolumeClaim:
-            claimName: payment-db-pvc
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: payment-db-pvc
-  namespace: careforall
-spec:
-  accessModes: [ "ReadWriteOnce" ]
-  resources:
-    requests:
-      storage: 1Gi
+            claimName: shared-db-pvc
 
 # --- Banking DB ---
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -278,40 +215,25 @@ spec:
       containers:
         - name: postgres
           image: postgres:15-alpine
+          envFrom:
+             - configMapRef:
+                 name: app-config
+             - secretRef:
+                 name: app-secrets
           env:
-            - name: POSTGRES_USER
-              valueFrom:
-                configMapKeyRef:
-                  name: app-config
-                  key: POSTGRES_USER
-            - name: POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: app-secrets
-                  key: POSTGRES_PASSWORD
             - name: POSTGRES_DB
-              value: bankingdb
+              value: banking_db
           volumeMounts:
             - name: db-data
               mountPath: /var/lib/postgresql/data
+              subPath: banking-data # <--- Different subPath
       volumes:
         - name: db-data
           persistentVolumeClaim:
-            claimName: banking-db-pvc
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: banking-db-pvc
-  namespace: careforall
-spec:
-  accessModes: [ "ReadWriteOnce" ]
-  resources:
-    requests:
-      storage: 1Gi
-
+            claimName: shared-db-pvc
 
 # --- Notification DB ---
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -340,37 +262,19 @@ spec:
       containers:
         - name: postgres
           image: postgres:15-alpine
+          envFrom:
+             - configMapRef:
+                 name: app-config
+             - secretRef:
+                 name: app-secrets
           env:
-            - name: POSTGRES_USER
-              valueFrom:
-                configMapKeyRef:
-                  name: app-config
-                  key: POSTGRES_USER
-            - name: POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: app-secrets
-                  key: POSTGRES_PASSWORD
             - name: POSTGRES_DB
-              value: notificationdb
+              value: notification_db
           volumeMounts:
             - name: db-data
               mountPath: /var/lib/postgresql/data
+              subPath: notification-data # <--- Different subPath
       volumes:
         - name: db-data
           persistentVolumeClaim:
-            claimName: notification-db-pvc
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: notification-db-pvc
-  namespace: careforall
-spec:
-  accessModes: [ "ReadWriteOnce" ]
-  resources:
-    requests:
-      storage: 1Gi
-
-# Note: Repeat similar blocks for donation-db, payment-db, banking-db, notification-db
-# modifying the 'name', 'app' labels, and 'POSTGRES_DB' value accordingly.
+            claimName: shared-db-pvc
