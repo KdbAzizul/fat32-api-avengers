@@ -1,9 +1,20 @@
-FROM python:3.12-slim
+# FIX: Use Python 3.10
+FROM python:3.10-slim
 
 WORKDIR /app
 
+# FIX: Install system compilers
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc \
+    g++ \
+    libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
+
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+
+# FIX: Upgrade pip first
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 

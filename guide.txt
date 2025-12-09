@@ -1,0 +1,113 @@
+Based on the docker-compose.yml and .env contents you provided, here is the exact list of things you must fix to ensure the services can talk to each other inside the Docker network.
+
+1. Fixes for docker-compose.yml
+A. Fix Kafka Ports (Standardization)
+
+Your current config has the ports swapped compared to industry standards. Usually, we use 9092 for your laptop (localhost) and 29092 for internal Docker containers.
+
+Change the kafka service to this:
+
+code
+Yaml
+download
+content_copy
+expand_less
+kafka:
+    image: confluentinc/cp-kafka:7.0.1
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092" # External access (if you run scripts from your laptop)
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      # FIX: Internal uses 29092, External uses 9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+B. Add the Missing Jaeger Service
+
+Your .env files reference JAEGER_ENDPOINT, but your Docker Compose is missing the Jaeger container. Your apps will likely hang or throw errors trying to connect to it.
+
+Add this to the Infrastructure Services section:
+
+code
+Yaml
+download
+content_copy
+expand_less
+jaeger:
+    image: jaegertracing/all-in-one:latest
+    ports:
+      - "16686:16686" # Web UI
+      - "14268:14268" # Collector
+    restart: on-failure
+2. Fixes for .env Files
+
+You need to update EVERY service's .env file (donation, campaign, user, etc.) to match the network changes.
+
+A. Fix Kafka URL
+
+Since we changed the internal port to 29092 in Docker Compose, you must update the connection string.
+
+Old: KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+
+New: KAFKA_BOOTSTRAP_SERVERS=kafka:29092
+
+B. Fix Jaeger URL
+
+localhost does not work inside a container. You must use the service name jaeger.
+
+Old: JAEGER_ENDPOINT=http://localhost:16686
+
+New: JAEGER_ENDPOINT=http://jaeger:14268/api/traces
+
+Note: Port 16686 is for the UI (Human view). Port 14268 is for the Collector (API).
+
+C. Verify Database Hostnames
+
+Ensure each .env points to its specific database container name defined in your compose file, and uses the internal port (5432).
+
+Example for Donation Service:
+
+code
+Ini
+download
+content_copy
+expand_less
+# MUST match the service name in docker-compose: 'donation-db'
+POSTGRES_SERVER=donation-db 
+# MUST be 5432 (Internal port), NOT 5434
+DATABASE_URL=postgresql://donation_admin:donation_password_123@donation-db:5432/donation_db
+
+Example for User Service:
+
+code
+Ini
+download
+content_copy
+expand_less
+POSTGRES_SERVER=user-db
+DATABASE_URL=postgresql://user_admin:user_password_123@user-db:5432/user_db
+Summary Checklist
+
+Docker Compose: Swap Kafka ports (kafka:29092 internal, localhost:9092 external).
+
+Docker Compose: Add the jaeger service.
+
+All .envs: Update Kafka to kafka:29092.
+
+All .envs: Update Jaeger to http://jaeger:14268/api/traces.
+
+All .envs: Ensure POSTGRES_SERVER matches the specific container name (e.g., user-db) and uses port 5432.
+
+Once you make these changes, run:
+
+code
+Bash
+download
+content_copy
+expand_less
+docker-compose up --build

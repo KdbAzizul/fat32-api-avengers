@@ -1,0 +1,205 @@
+version: '3.8'
+
+services:
+  # ============================================================================
+  # Backend Services
+  # ============================================================================
+  api-gateway:
+    image: shahriar22/demo-api-gateway:latest
+    ports:
+      - "8000:8000"
+    env_file: .env
+    environment:
+      - USER_SERVICE_URL=http://user-service:8001
+      - CAMPAIGN_SERVICE_URL=http://campaign-service:8002
+      - DONATION_SERVICE_URL=http://donation-service:8003
+      - PAYMENT_SERVICE_URL=http://payment-service:8004
+      - NOTIFICATION_SERVICE_URL=http://notification-service:8005
+      - BANKING_SERVICE_URL=http://banking-service:8006
+    depends_on:
+      - user-service
+      - campaign-service
+      - donation-service
+      - payment-service
+      - banking-service
+      - notification-service
+    restart: always
+
+  user-service:
+    image: shahriar22/demo-user-service:latest
+    ports:
+      - "8001:8001"
+    env_file: .env
+    depends_on:
+      - user-db
+    restart: always
+
+  campaign-service:
+    image: shahriar22/demo-campaign-service:latest
+    ports:
+      - "8002:8002"
+    env_file: .env
+    depends_on:
+      - campaign-db
+      - redis
+    restart: always
+
+  donation-service:
+    image: shahriar22/demo-donation-service:latest
+    ports:
+      - "8003:8003"
+    env_file: .env
+    depends_on:
+      - donation-db
+      - kafka
+    restart: always
+
+  payment-service:
+    image: shahriar22/demo-payment-service:latest
+    ports:
+      - "8004:8004"
+    env_file: .env
+    depends_on:
+      - payment-db
+      - kafka
+    restart: always
+
+  notification-service:
+    image: shahriar22/demo-notification-service:latest
+    ports:
+      - "8005:8005"
+    env_file: .env
+    depends_on:
+      - notification-db
+      - kafka
+    restart: always
+
+  banking-service:
+    image: shahriar22/demo-banking-service:latest
+    ports:
+      - "8006:8006"
+    env_file: .env
+    depends_on:
+      - banking-db
+    restart: always
+
+  # ============================================================================
+  # Frontend Service
+  # ============================================================================
+  frontend:
+    image: shahriar22/demo-frontend-service:latest
+    ports:
+      - "3000:3000"
+    env_file: .env
+    depends_on:
+      - api-gateway
+    restart: always
+
+  # ============================================================================
+  # Infrastructure (Databases)
+  # ============================================================================
+  user-db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: user_db
+      POSTGRES_USER: user_admin
+      POSTGRES_PASSWORD: ${USER_DB_PASSWORD}
+    volumes:
+      - user_db_data:/var/lib/postgresql/data
+    restart: always
+
+  campaign-db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: campaign_db
+      POSTGRES_USER: campaign_admin
+      POSTGRES_PASSWORD: ${CAMPAIGN_DB_PASSWORD}
+    volumes:
+      - campaign_db_data:/var/lib/postgresql/data
+    restart: always
+
+  donation-db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: donation_db
+      POSTGRES_USER: donation_admin
+      POSTGRES_PASSWORD: ${DONATION_DB_PASSWORD}
+    volumes:
+      - donation_db_data:/var/lib/postgresql/data
+    restart: always
+
+  payment-db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: payment_db
+      POSTGRES_USER: payment_admin
+      POSTGRES_PASSWORD: ${PAYMENT_DB_PASSWORD}
+    volumes:
+      - payment_db_data:/var/lib/postgresql/data
+    restart: always
+
+  notification-db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: notification_db
+      POSTGRES_USER: notification_admin
+      POSTGRES_PASSWORD: ${NOTIFICATION_DB_PASSWORD}
+    volumes:
+      - notification_db_data:/var/lib/postgresql/data
+    restart: always
+
+  banking-db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: banking_db
+      POSTGRES_USER: banking_admin
+      POSTGRES_PASSWORD: ${BANKING_DB_PASSWORD}
+    volumes:
+      - banking_db_data:/var/lib/postgresql/data
+    restart: always
+
+  # ============================================================================
+  # Infrastructure (Cache & Broker)
+  # ============================================================================
+  redis:
+    image: redis:7-alpine
+    restart: always
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.0.1
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    restart: always
+
+  kafka:
+    image: confluentinc/cp-kafka:7.0.1
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    environment:
+      KAFKA_PORT: ""
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    restart: always
+
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    ports:
+      - "16686:16686"
+      - "14268:14268"
+    restart: always
+
+volumes:
+  user_db_data:
+  campaign_db_data:
+  donation_db_data:
+  payment_db_data:
+  notification_db_data:
+  banking_db_data:

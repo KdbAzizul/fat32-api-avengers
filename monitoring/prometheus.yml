@@ -1,0 +1,26 @@
+global:
+  scrape_interval: 5s
+
+scrape_configs:
+  # 1. Scrape Prometheus itself
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # 2. Scrape cAdvisor (Docker Container Stats - CPU/RAM)
+  - job_name: 'cadvisor'
+    static_configs:
+      - targets: ['cadvisor:8080']
+
+  # 3. Scrape Microservices (Only works if you added /metrics endpoint to python code)
+  # Uncomment these later if you add the python instrumentation code
+  # - job_name: 'microservices'
+  #   static_configs:
+  #     - targets: 
+  #       - 'api-gateway:8000'
+  #       - 'user-service:8001'
+  #       - 'campaign-service:8002'
+  #       - 'donation-service:8003'
+  #       - 'payment-service:8004'
+  #       - 'notification-service:8005'
+  #       - 'banking-service:8006'

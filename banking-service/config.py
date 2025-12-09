@@ -2,10 +2,12 @@
 Configuration for Banking Service
 """
 import os
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     """Application settings"""
+    
+    model_config = SettingsConfigDict(extra='ignore', env_file=".env", case_sensitive=True)
     
     # Service
     SERVICE_NAME: str = os.getenv("SERVICE_NAME", "banking-service")
@@ -21,9 +23,5 @@ class Settings(BaseSettings):
     # Tracing
     TRACING_ENABLED: bool = os.getenv("TRACING_ENABLED", "true").lower() == "true"
     JAEGER_ENDPOINT: str = os.getenv("JAEGER_ENDPOINT", "http://jaeger:14268/api/traces")
-    
-    class Config:
-        env_file = ".env"
-        case_sensitive = True
 
 settings = Settings()

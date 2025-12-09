@@ -1,7 +1,9 @@
 # Notification Service Dependencies
 
 fastapi==0.109.0
-uvicorn[standard]==0.27.0
+uvicorn==0.27.0
+uvloop==0.19.0
+httptools==0.6.1
 pydantic[email]==2.5.3
 pydantic-settings==2.1.0
 python-dotenv==1.0.0
@@ -24,11 +26,6 @@ opentelemetry-instrumentation-fastapi==0.42b0
 opentelemetry-instrumentation-sqlalchemy==0.42b0
 opentelemetry-exporter-jaeger-thrift==1.21.0
 structlog==23.2.0
-# Testing
-pytest==7.4.4
-pytest-asyncio==0.23.3
-pytest-mock==3.12.0
-httpx==0.26.0
 
 # For production notification providers (optional)
 # sendgrid==6.10.0

@@ -1,0 +1,964 @@
+payment-service-1       |   File "/app/database.py", line 9, in <module>
+banking-service-1       |   File "/usr/local/lib/python3.10/site-packages/click/core.py", line 824, in invoke
+banking-service-1       |     return callback(*args, **kwargs)
+banking-service-1       |   File "/usr/local/lib/python3.10/site-packages/uvicorn/main.py", line 416, in main
+notification-service-1  |   File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+kafka-1                 | [2025-12-08 19:18:21,841] INFO [Controller id=1] Partitions that completed preferred replica election:  (kafka.controller.KafkaController)
+payment-service-1       |     from config import settings
+payment-service-1       |   File "/app/config.py", line 33, in <module>
+payment-service-1       |     settings = Settings()
+banking-service-1       |     run(
+banking-service-1       |   File "/usr/local/lib/python3.10/site-packages/uvicorn/main.py", line 587, in run
+banking-service-1       |     server.run()
+api-gateway-1           |     return ctx.invoke(self.callback, **ctx.params)
+donation-service-1      |     return asyncio.run(self.serve(sockets=sockets))
+payment-service-1       |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/main.py", line 71, in __init__     
+notification-service-1  |   File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+notification-service-1  |   File "/app/main.py", line 16, in <module>
+notification-service-1  |     from database import init_db, get_db, close_db
+notification-service-1  |   File "/app/database.py", line 7, in <module>
+notification-service-1  |     from config import settings
+notification-service-1  |   File "/app/config.py", line 32, in <module>
+notification-service-1  |     settings = Settings()
+notification-service-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/main.py", line 71, in __init__     
+notification-service-1  |     super().__init__(
+notification-service-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic/main.py", line 164, in __init__
+notification-service-1  |     __pydantic_self__.__pydantic_validator__.validate_python(data, self_instance=__pydantic_self__)  
+notification-service-1  | pydantic_core._pydantic_core.ValidationError: 6 validation errors for Settings
+notification-service-1  | POSTGRES_USER
+notification-service-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='notification_admin', input_type=str]
+notification-service-1  |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+notification-service-1  | POSTGRES_PASSWORD
+notification-service-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='notification_password_123', input_type=str]
+notification-service-1  |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+notification-service-1  | POSTGRES_SERVER
+notification-service-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='notification-db', input_type=str]
+notification-service-1  |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+notification-service-1  | POSTGRES_DB
+notification-service-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='notification_db', input_type=str]
+notification-service-1  |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+notification-service-1  | KAFKA_CONSUMER_GROUP_ID
+payment-service-1       |     super().__init__(
+kafka-1                 | [2025-12-08 19:18:21,842] INFO [KafkaServer id=1] started (kafka.server.KafkaServer)
+banking-service-1       |   File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 61, in run
+api-gateway-1           |   File "/usr/local/lib/python3.10/site-packages/click/core.py", line 824, in invoke
+api-gateway-1           |     return callback(*args, **kwargs)
+api-gateway-1           |   File "/usr/local/lib/python3.10/site-packages/uvicorn/main.py", line 418, in main
+api-gateway-1           |     run(
+api-gateway-1           |   File "/usr/local/lib/python3.10/site-packages/uvicorn/main.py", line 587, in run
+api-gateway-1           |     server.run()
+api-gateway-1           |   File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 62, in run
+api-gateway-1           |     return asyncio.run(self.serve(sockets=sockets))
+api-gateway-1           |   File "/usr/local/lib/python3.10/asyncio/runners.py", line 44, in run
+kafka-1                 | [2025-12-08 19:18:21,844] INFO [Controller id=1] Skipping preferred replica election for partitions due to topic deletion:  (kafka.controller.KafkaController)
+banking-service-1       |     return asyncio.run(self.serve(sockets=sockets))
+banking-service-1       |   File "/usr/local/lib/python3.10/asyncio/runners.py", line 44, in run
+banking-service-1       |     return loop.run_until_complete(main)
+banking-service-1       |   File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
+banking-service-1       |   File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 68, in serve
+banking-service-1       |     config.load()
+donation-service-1      |   File "/usr/local/lib/python3.10/asyncio/runners.py", line 44, in run
+donation-service-1      |     return loop.run_until_complete(main)
+payment-service-1       |   File "/usr/local/lib/python3.10/site-packages/pydantic/main.py", line 164, in __init__
+payment-service-1       |     __pydantic_self__.__pydantic_validator__.validate_python(data, self_instance=__pydantic_self__)  
+payment-service-1       | pydantic_core._pydantic_core.ValidationError: 5 validation errors for Settings
+banking-service-1       |   File "/usr/local/lib/python3.10/site-packages/uvicorn/config.py", line 467, in load
+banking-service-1       |     self.loaded_app = import_from_string(self.app)
+banking-service-1       |   File "/usr/local/lib/python3.10/site-packages/uvicorn/importer.py", line 21, in import_from_string 
+banking-service-1       |     module = importlib.import_module(module_str)
+banking-service-1       |   File "/usr/local/lib/python3.10/importlib/__init__.py", line 126, in import_module
+banking-service-1       |     return _bootstrap._gcd_import(name[level:], package, level)
+banking-service-1       |   File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+banking-service-1       |   File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+banking-service-1       |   File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+banking-service-1       |   File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+banking-service-1       |   File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+banking-service-1       |   File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+banking-service-1       |   File "/app/main.py", line 19, in <module>
+banking-service-1       |     from config import settings
+banking-service-1       |   File "/app/config.py", line 29, in <module>
+banking-service-1       |     settings = Settings()
+banking-service-1       |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/main.py", line 71, in __init__     
+banking-service-1       |     super().__init__(
+api-gateway-1           |     return loop.run_until_complete(main)
+kafka-1                 | [2025-12-08 19:18:21,847] INFO [Controller id=1] Resuming preferred replica election for partitions:  (kafka.controller.KafkaController)
+payment-service-1       | POSTGRES_USER
+payment-service-1       |   Extra inputs are not permitted [type=extra_forbidden, input_value='payment_admin', input_type=str] 
+payment-service-1       |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+payment-service-1       | POSTGRES_PASSWORD
+payment-service-1       |   Extra inputs are not permitted [type=extra_forbidden, input_value='payment_password_123', input_type=str]
+payment-service-1       |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+payment-service-1       | POSTGRES_SERVER
+payment-service-1       |   Extra inputs are not permitted [type=extra_forbidden, input_value='payment-db', input_type=str]    
+payment-service-1       |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+payment-service-1       | POSTGRES_DB
+payment-service-1       |   Extra inputs are not permitted [type=extra_forbidden, input_value='payment_db', input_type=str]    
+payment-service-1       |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+payment-service-1       | KAFKA_PAYMENT_TOPIC
+payment-service-1       |   Extra inputs are not permitted [type=extra_forbidden, input_value='payment_events', input_type=str]
+api-gateway-1           |   File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
+api-gateway-1           |   File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 69, in serve
+api-gateway-1           |     config.load()
+api-gateway-1           |   File "/usr/local/lib/python3.10/site-packages/uvicorn/config.py", line 458, in load
+api-gateway-1           |     self.loaded_app = import_from_string(self.app)
+api-gateway-1           |   File "/usr/local/lib/python3.10/site-packages/uvicorn/importer.py", line 21, in import_from_string 
+api-gateway-1           |     module = importlib.import_module(module_str)
+api-gateway-1           |   File "/usr/local/lib/python3.10/importlib/__init__.py", line 126, in import_module
+api-gateway-1           |     return _bootstrap._gcd_import(name[level:], package, level)
+api-gateway-1           |   File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+payment-service-1       |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+kafka-1                 | [2025-12-08 19:18:21,859] INFO [Controller id=1] Starting replica leader election (PREFERRED) for partitions  triggered by ZkTriggered (kafka.controller.KafkaController)
+notification-service-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='notification-group', input_type=str]
+notification-service-1  |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+notification-service-1  | KAFKA_TOPIC
+notification-service-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='user_events', input_type=str]   
+notification-service-1  |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+notification-service-1  | Traceback (most recent call last):
+notification-service-1  |   File "/usr/local/bin/uvicorn", line 7, in <module>
+notification-service-1  |     sys.exit(main())
+api-gateway-1           |   File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+payment-service-1       | Traceback (most recent call last):
+kafka-1                 | [2025-12-08 19:18:21,910] INFO [Controller id=1] Starting the controller scheduler (kafka.controller.KafkaController)
+donation-service-1      |   File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
+banking-service-1       |   File "/usr/local/lib/python3.10/site-packages/pydantic/main.py", line 164, in __init__
+notification-service-1  |   File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1485, in __call__
+notification-service-1  |     return self.main(*args, **kwargs)
+notification-service-1  |   File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1406, in main
+notification-service-1  |     rv = self.invoke(ctx)
+notification-service-1  |   File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1269, in invoke
+notification-service-1  |     return ctx.invoke(self.callback, **ctx.params)
+notification-service-1  |   File "/usr/local/lib/python3.10/site-packages/click/core.py", line 824, in invoke
+payment-service-1       |   File "/usr/local/bin/uvicorn", line 7, in <module>
+payment-service-1       |     sys.exit(main())
+donation-service-1      |   File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 68, in serve
+banking-service-1       |     __pydantic_self__.__pydantic_validator__.validate_python(data, self_instance=__pydantic_self__)
+api-gateway-1           |   File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+api-gateway-1           |   File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+api-gateway-1           |   File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+api-gateway-1           |   File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+api-gateway-1           |   File "/app/main.py", line 16, in <module>
+api-gateway-1           |     from core.config import settings
+api-gateway-1           |   File "/app/core/config.py", line 81, in <module>
+api-gateway-1           |     settings = Settings()
+api-gateway-1           |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/main.py", line 72, in __init__     
+donation-service-1      |     config.load()
+donation-service-1      |   File "/usr/local/lib/python3.10/site-packages/uvicorn/config.py", line 467, in load
+donation-service-1      |     self.loaded_app = import_from_string(self.app)
+donation-service-1      |   File "/usr/local/lib/python3.10/site-packages/uvicorn/importer.py", line 21, in import_from_string 
+donation-service-1      |     module = importlib.import_module(module_str)
+donation-service-1      |   File "/usr/local/lib/python3.10/importlib/__init__.py", line 126, in import_module
+donation-service-1      |     return _bootstrap._gcd_import(name[level:], package, level)
+notification-service-1  |     return callback(*args, **kwargs)
+notification-service-1  |   File "/usr/local/lib/python3.10/site-packages/uvicorn/main.py", line 418, in main
+notification-service-1  |     run(
+notification-service-1  |   File "/usr/local/lib/python3.10/site-packages/uvicorn/main.py", line 587, in run
+notification-service-1  |     server.run()
+notification-service-1  |   File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 62, in run
+notification-service-1  |     return asyncio.run(self.serve(sockets=sockets))
+notification-service-1  |   File "/usr/local/lib/python3.10/asyncio/runners.py", line 44, in run
+notification-service-1  |     return loop.run_until_complete(main)
+notification-service-1  |   File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
+notification-service-1  |   File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 69, in serve
+notification-service-1  |     config.load()
+notification-service-1  |   File "/usr/local/lib/python3.10/site-packages/uvicorn/config.py", line 458, in load
+notification-service-1  |     self.loaded_app = import_from_string(self.app)
+banking-service-1       | pydantic_core._pydantic_core.ValidationError: 4 validation errors for Settings
+banking-service-1       | POSTGRES_USER
+banking-service-1       |   Extra inputs are not permitted [type=extra_forbidden, input_value='banking_admin', input_type=str] 
+banking-service-1       |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+banking-service-1       | POSTGRES_PASSWORD
+banking-service-1       |   Extra inputs are not permitted [type=extra_forbidden, input_value='banking_password_123', input_type=str]
+banking-service-1       |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+banking-service-1       | POSTGRES_SERVER
+banking-service-1       |   Extra inputs are not permitted [type=extra_forbidden, input_value='banking-db', input_type=str]    
+banking-service-1       |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+banking-service-1       | POSTGRES_DB
+donation-service-1      |   File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+kafka-1                 | [2025-12-08 19:18:22,041] TRACE [Controller id=1 epoch=1] Received response UpdateMetadataResponseData(errorCode=0) for request UPDATE_METADATA with correlation id 0 sent to broker kafka:29092 (id: 1 rack: null) (state.change.logger)
+payment-service-1       |   File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1485, in __call__
+api-gateway-1           |     **__pydantic_self__._settings_build_values(
+notification-service-1  |   File "/usr/local/lib/python3.10/site-packages/uvicorn/importer.py", line 21, in import_from_string 
+banking-service-1       |   Extra inputs are not permitted [type=extra_forbidden, input_value='banking_db', input_type=str]    
+banking-service-1       |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+kafka-1                 | [2025-12-08 19:18:22,073] INFO [BrokerToControllerChannelManager broker=1 name=alterIsr]: Recorded new controller, from now on will use broker kafka:29092 (id: 1 rack: null) (kafka.server.BrokerToControllerRequestThread)        
+kafka-1                 | [2025-12-08 19:18:22,080] INFO [BrokerToControllerChannelManager broker=1 name=forwarding]: Recorded new controller, from now on will use broker kafka:29092 (id: 1 rack: null) (kafka.server.BrokerToControllerRequestThread)      
+kafka-1                 | [2025-12-08 19:18:26,915] INFO [Controller id=1] Processing automatic preferred replica leader election (kafka.controller.KafkaController)
+kafka-1                 | [2025-12-08 19:18:26,917] TRACE [Controller id=1] Checking need to trigger auto leader balancing (kafka.controller.KafkaController)
+donation-service-1      |   File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+donation-service-1      |   File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+donation-service-1      |   File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+donation-service-1      |   File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+donation-service-1      |   File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+donation-service-1      |   File "/app/app/main.py", line 9, in <module>
+donation-service-1      |     from app.database.database import init_db, close_db
+payment-service-1       |     return self.main(*args, **kwargs)
+payment-service-1       |   File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1406, in main
+notification-service-1  |     module = importlib.import_module(module_str)
+notification-service-1  |   File "/usr/local/lib/python3.10/importlib/__init__.py", line 126, in import_module
+api-gateway-1           |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/main.py", line 160, in _settings_build_values
+api-gateway-1           |     return deep_update(*reversed([source() for source in sources]))
+api-gateway-1           |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/main.py", line 160, in <listcomp>  
+api-gateway-1           |     return deep_update(*reversed([source() for source in sources]))
+api-gateway-1           |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/sources.py", line 254, in __call__ 
+api-gateway-1           |     raise SettingsError(
+api-gateway-1           | pydantic_settings.sources.SettingsError: error parsing value for field "CORS_ORIGINS" from source "EnvSettingsSource"
+api-gateway-1           | Traceback (most recent call last):
+api-gateway-1           |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/sources.py", line 252, in __call__ 
+api-gateway-1           |     field_value = self.prepare_field_value(field_name, field, field_value, value_is_complex)
+api-gateway-1           |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/sources.py", line 435, in prepare_field_value
+api-gateway-1           |     raise e
+api-gateway-1           |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/sources.py", line 432, in prepare_field_value
+api-gateway-1           |     value = self.decode_complex_value(field_name, field, value)
+api-gateway-1           |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/sources.py", line 103, in decode_complex_value
+api-gateway-1           |     return json.loads(value)
+payment-service-1       |     rv = self.invoke(ctx)
+payment-service-1       |   File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1269, in invoke
+payment-service-1       |     return ctx.invoke(self.callback, **ctx.params)
+payment-service-1       |   File "/usr/local/lib/python3.10/site-packages/click/core.py", line 824, in invoke
+payment-service-1       |     return callback(*args, **kwargs)
+payment-service-1       |   File "/usr/local/lib/python3.10/site-packages/uvicorn/main.py", line 418, in main
+api-gateway-1           |   File "/usr/local/lib/python3.10/json/__init__.py", line 346, in loads
+api-gateway-1           |     return _default_decoder.decode(s)
+api-gateway-1           |   File "/usr/local/lib/python3.10/json/decoder.py", line 337, in decode
+api-gateway-1           |     obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+api-gateway-1           |   File "/usr/local/lib/python3.10/json/decoder.py", line 355, in raw_decode
+api-gateway-1           |     raise JSONDecodeError("Expecting value", s, err.value) from None
+api-gateway-1           | json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+api-gateway-1           |
+api-gateway-1           | The above exception was the direct cause of the following exception:
+api-gateway-1           |
+donation-service-1      |   File "/app/app/database/database.py", line 8, in <module>
+notification-service-1  |     return _bootstrap._gcd_import(name[level:], package, level)
+payment-service-1       |     run(
+payment-service-1       |   File "/usr/local/lib/python3.10/site-packages/uvicorn/main.py", line 587, in run
+payment-service-1       |     server.run()
+payment-service-1       |   File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 62, in run
+payment-service-1       |     return asyncio.run(self.serve(sockets=sockets))
+payment-service-1       |   File "/usr/local/lib/python3.10/asyncio/runners.py", line 44, in run
+payment-service-1       |     return loop.run_until_complete(main)
+payment-service-1       |   File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
+payment-service-1       |   File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 69, in serve
+notification-service-1  |   File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+notification-service-1  |   File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+donation-service-1      |     settings = get_settings()
+donation-service-1      |   File "/app/app/core/config.py", line 42, in get_settings
+donation-service-1      |     return Settings()
+donation-service-1      |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/main.py", line 71, in __init__     
+donation-service-1      |     super().__init__(
+donation-service-1      |   File "/usr/local/lib/python3.10/site-packages/pydantic/main.py", line 164, in __init__
+donation-service-1      |     __pydantic_self__.__pydantic_validator__.validate_python(data, self_instance=__pydantic_self__)  
+payment-service-1       |     config.load()
+payment-service-1       |   File "/usr/local/lib/python3.10/site-packages/uvicorn/config.py", line 458, in load
+payment-service-1       |     self.loaded_app = import_from_string(self.app)
+payment-service-1       |   File "/usr/local/lib/python3.10/site-packages/uvicorn/importer.py", line 21, in import_from_string 
+payment-service-1       |     module = importlib.import_module(module_str)
+payment-service-1       |   File "/usr/local/lib/python3.10/importlib/__init__.py", line 126, in import_module
+payment-service-1       |     return _bootstrap._gcd_import(name[level:], package, level)
+api-gateway-1           | Traceback (most recent call last):
+notification-service-1  |   File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+notification-service-1  |   File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+payment-service-1       |   File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+payment-service-1       |   File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+payment-service-1       |   File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+payment-service-1       |   File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+payment-service-1       |   File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+payment-service-1       |   File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+payment-service-1       |   File "/app/main.py", line 12, in <module>
+payment-service-1       |     from database import get_db, init_db
+donation-service-1      | pydantic_core._pydantic_core.ValidationError: 1 validation error for Settings
+notification-service-1  |   File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+api-gateway-1           |   File "/usr/local/bin/uvicorn", line 7, in <module>
+payment-service-1       |   File "/app/database.py", line 9, in <module>
+payment-service-1       |     from config import settings
+payment-service-1       |   File "/app/config.py", line 33, in <module>
+payment-service-1       |     settings = Settings()
+donation-service-1      | redis_url
+donation-service-1      |   Field required [type=missing, input_value={'database_url': 'postgre...aeger:14268/api/traces'}, input_type=dict]
+donation-service-1      |     For further information visit https://errors.pydantic.dev/2.5/v/missing
+payment-service-1       |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/main.py", line 71, in __init__     
+payment-service-1       |     super().__init__(
+payment-service-1       |   File "/usr/local/lib/python3.10/site-packages/pydantic/main.py", line 164, in __init__
+notification-service-1  |   File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+notification-service-1  |   File "/app/main.py", line 16, in <module>
+notification-service-1  |     from database import init_db, get_db, close_db
+notification-service-1  |   File "/app/database.py", line 7, in <module>
+payment-service-1       |     __pydantic_self__.__pydantic_validator__.validate_python(data, self_instance=__pydantic_self__)  
+payment-service-1       | pydantic_core._pydantic_core.ValidationError: 5 validation errors for Settings
+payment-service-1       | POSTGRES_USER
+payment-service-1       |   Extra inputs are not permitted [type=extra_forbidden, input_value='payment_admin', input_type=str] 
+payment-service-1       |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+payment-service-1       | POSTGRES_PASSWORD
+payment-service-1       |   Extra inputs are not permitted [type=extra_forbidden, input_value='payment_password_123', input_type=str]
+api-gateway-1           |     sys.exit(main())
+api-gateway-1           |   File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1485, in __call__
+api-gateway-1           |     return self.main(*args, **kwargs)
+api-gateway-1           |   File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1406, in main
+api-gateway-1           |     rv = self.invoke(ctx)
+api-gateway-1           |   File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1269, in invoke
+payment-service-1       |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+payment-service-1       | POSTGRES_SERVER
+payment-service-1       |   Extra inputs are not permitted [type=extra_forbidden, input_value='payment-db', input_type=str]    
+payment-service-1       |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+payment-service-1       | POSTGRES_DB
+notification-service-1  |     from config import settings
+notification-service-1  |   File "/app/config.py", line 32, in <module>
+notification-service-1  |     settings = Settings()
+notification-service-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/main.py", line 71, in __init__     
+notification-service-1  |     super().__init__(
+notification-service-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic/main.py", line 164, in __init__
+notification-service-1  |     __pydantic_self__.__pydantic_validator__.validate_python(data, self_instance=__pydantic_self__)  
+notification-service-1  | pydantic_core._pydantic_core.ValidationError: 6 validation errors for Settings
+notification-service-1  | POSTGRES_USER
+notification-service-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='notification_admin', input_type=str]
+notification-service-1  |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+notification-service-1  | POSTGRES_PASSWORD
+notification-service-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='notification_password_123', input_type=str]
+notification-service-1  |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+notification-service-1  | POSTGRES_SERVER
+notification-service-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='notification-db', input_type=str]
+notification-service-1  |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+api-gateway-1           |     return ctx.invoke(self.callback, **ctx.params)
+api-gateway-1           |   File "/usr/local/lib/python3.10/site-packages/click/core.py", line 824, in invoke
+notification-service-1  | POSTGRES_DB
+notification-service-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='notification_db', input_type=str]
+notification-service-1  |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+notification-service-1  | KAFKA_CONSUMER_GROUP_ID
+notification-service-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='notification-group', input_type=str]
+notification-service-1  |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+api-gateway-1           |     return callback(*args, **kwargs)
+payment-service-1       |   Extra inputs are not permitted [type=extra_forbidden, input_value='payment_db', input_type=str]    
+payment-service-1       |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+payment-service-1       | KAFKA_PAYMENT_TOPIC
+payment-service-1       |   Extra inputs are not permitted [type=extra_forbidden, input_value='payment_events', input_type=str]
+payment-service-1       |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+notification-service-1  | KAFKA_TOPIC
+api-gateway-1           |   File "/usr/local/lib/python3.10/site-packages/uvicorn/main.py", line 418, in main
+payment-service-1       | Traceback (most recent call last):
+payment-service-1       |   File "/usr/local/bin/uvicorn", line 7, in <module>
+api-gateway-1           |     run(
+notification-service-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='user_events', input_type=str]   
+notification-service-1  |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+notification-service-1  | Traceback (most recent call last):
+payment-service-1       |     sys.exit(main())
+payment-service-1       |   File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1485, in __call__
+payment-service-1       |     return self.main(*args, **kwargs)
+payment-service-1       |   File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1406, in main
+payment-service-1       |     rv = self.invoke(ctx)
+api-gateway-1           |   File "/usr/local/lib/python3.10/site-packages/uvicorn/main.py", line 587, in run
+notification-service-1  |   File "/usr/local/bin/uvicorn", line 7, in <module>
+payment-service-1       |   File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1269, in invoke
+payment-service-1       |     return ctx.invoke(self.callback, **ctx.params)
+payment-service-1       |   File "/usr/local/lib/python3.10/site-packages/click/core.py", line 824, in invoke
+payment-service-1       |     return callback(*args, **kwargs)
+payment-service-1       |   File "/usr/local/lib/python3.10/site-packages/uvicorn/main.py", line 418, in main
+payment-service-1       |     run(
+payment-service-1       |   File "/usr/local/lib/python3.10/site-packages/uvicorn/main.py", line 587, in run
+payment-service-1       |     server.run()
+payment-service-1       |   File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 62, in run
+payment-service-1       |     return asyncio.run(self.serve(sockets=sockets))
+payment-service-1       |   File "/usr/local/lib/python3.10/asyncio/runners.py", line 44, in run
+payment-service-1       |     return loop.run_until_complete(main)
+payment-service-1       |   File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
+payment-service-1       |   File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 69, in serve
+notification-service-1  |     sys.exit(main())
+notification-service-1  |   File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1485, in __call__
+payment-service-1       |     config.load()
+payment-service-1       |   File "/usr/local/lib/python3.10/site-packages/uvicorn/config.py", line 458, in load
+payment-service-1       |     self.loaded_app = import_from_string(self.app)
+payment-service-1       |   File "/usr/local/lib/python3.10/site-packages/uvicorn/importer.py", line 21, in import_from_string 
+payment-service-1       |     module = importlib.import_module(module_str)
+payment-service-1       |   File "/usr/local/lib/python3.10/importlib/__init__.py", line 126, in import_module
+payment-service-1       |     return _bootstrap._gcd_import(name[level:], package, level)
+payment-service-1       |   File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+payment-service-1       |   File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+payment-service-1       |   File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+payment-service-1       |   File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+payment-service-1       |   File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+payment-service-1       |   File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+payment-service-1       |   File "/app/main.py", line 12, in <module>
+payment-service-1       |     from database import get_db, init_db
+payment-service-1       |   File "/app/database.py", line 9, in <module>
+payment-service-1       |     from config import settings
+payment-service-1       |   File "/app/config.py", line 33, in <module>
+payment-service-1       |     settings = Settings()
+payment-service-1       |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/main.py", line 71, in __init__     
+payment-service-1       |     super().__init__(
+payment-service-1       |   File "/usr/local/lib/python3.10/site-packages/pydantic/main.py", line 164, in __init__
+payment-service-1       |     __pydantic_self__.__pydantic_validator__.validate_python(data, self_instance=__pydantic_self__)  
+payment-service-1       | pydantic_core._pydantic_core.ValidationError: 5 validation errors for Settings
+payment-service-1       | POSTGRES_USER
+payment-service-1       |   Extra inputs are not permitted [type=extra_forbidden, input_value='payment_admin', input_type=str] 
+payment-service-1       |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+payment-service-1       | POSTGRES_PASSWORD
+payment-service-1       |   Extra inputs are not permitted [type=extra_forbidden, input_value='payment_password_123', input_type=str]
+payment-service-1       |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+payment-service-1       | POSTGRES_SERVER
+payment-service-1       |   Extra inputs are not permitted [type=extra_forbidden, input_value='payment-db', input_type=str]    
+payment-service-1       |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+payment-service-1       | POSTGRES_DB
+payment-service-1       |   Extra inputs are not permitted [type=extra_forbidden, input_value='payment_db', input_type=str]    
+api-gateway-1           |     server.run()
+api-gateway-1           |   File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 62, in run
+api-gateway-1           |     return asyncio.run(self.serve(sockets=sockets))
+notification-service-1  |     return self.main(*args, **kwargs)
+payment-service-1       |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+payment-service-1       | KAFKA_PAYMENT_TOPIC
+payment-service-1       |   Extra inputs are not permitted [type=extra_forbidden, input_value='payment_events', input_type=str]
+payment-service-1       |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+payment-service-1       | Traceback (most recent call last):
+payment-service-1       |   File "/usr/local/bin/uvicorn", line 7, in <module>
+payment-service-1       |     sys.exit(main())
+payment-service-1       |   File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1485, in __call__
+payment-service-1       |     return self.main(*args, **kwargs)
+payment-service-1       |   File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1406, in main
+payment-service-1       |     rv = self.invoke(ctx)
+api-gateway-1           |   File "/usr/local/lib/python3.10/asyncio/runners.py", line 44, in run
+api-gateway-1           |     return loop.run_until_complete(main)
+payment-service-1       |   File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1269, in invoke
+payment-service-1       |     return ctx.invoke(self.callback, **ctx.params)
+api-gateway-1           |   File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
+api-gateway-1           |   File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 69, in serve
+api-gateway-1           |     config.load()
+notification-service-1  |   File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1406, in main
+notification-service-1  |     rv = self.invoke(ctx)
+notification-service-1  |   File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1269, in invoke
+notification-service-1  |     return ctx.invoke(self.callback, **ctx.params)
+notification-service-1  |   File "/usr/local/lib/python3.10/site-packages/click/core.py", line 824, in invoke
+notification-service-1  |     return callback(*args, **kwargs)
+api-gateway-1           |   File "/usr/local/lib/python3.10/site-packages/uvicorn/config.py", line 458, in load
+api-gateway-1           |     self.loaded_app = import_from_string(self.app)
+notification-service-1  |   File "/usr/local/lib/python3.10/site-packages/uvicorn/main.py", line 418, in main
+notification-service-1  |     run(
+notification-service-1  |   File "/usr/local/lib/python3.10/site-packages/uvicorn/main.py", line 587, in run
+notification-service-1  |     server.run()
+notification-service-1  |   File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 62, in run
+notification-service-1  |     return asyncio.run(self.serve(sockets=sockets))
+notification-service-1  |   File "/usr/local/lib/python3.10/asyncio/runners.py", line 44, in run
+notification-service-1  |     return loop.run_until_complete(main)
+notification-service-1  |   File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
+notification-service-1  |   File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 69, in serve
+notification-service-1  |     config.load()
+notification-service-1  |   File "/usr/local/lib/python3.10/site-packages/uvicorn/config.py", line 458, in load
+notification-service-1  |     self.loaded_app = import_from_string(self.app)
+payment-service-1       |   File "/usr/local/lib/python3.10/site-packages/click/core.py", line 824, in invoke
+payment-service-1       |     return callback(*args, **kwargs)
+payment-service-1       |   File "/usr/local/lib/python3.10/site-packages/uvicorn/main.py", line 418, in main
+api-gateway-1           |   File "/usr/local/lib/python3.10/site-packages/uvicorn/importer.py", line 21, in import_from_string 
+api-gateway-1           |     module = importlib.import_module(module_str)
+payment-service-1       |     run(
+payment-service-1       |   File "/usr/local/lib/python3.10/site-packages/uvicorn/main.py", line 587, in run
+payment-service-1       |     server.run()
+payment-service-1       |   File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 62, in run
+api-gateway-1           |   File "/usr/local/lib/python3.10/importlib/__init__.py", line 126, in import_module
+api-gateway-1           |     return _bootstrap._gcd_import(name[level:], package, level)
+api-gateway-1           |   File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+notification-service-1  |   File "/usr/local/lib/python3.10/site-packages/uvicorn/importer.py", line 21, in import_from_string 
+notification-service-1  |     module = importlib.import_module(module_str)
+notification-service-1  |   File "/usr/local/lib/python3.10/importlib/__init__.py", line 126, in import_module
+notification-service-1  |     return _bootstrap._gcd_import(name[level:], package, level)
+notification-service-1  |   File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+notification-service-1  |   File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+notification-service-1  |   File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+notification-service-1  |   File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+notification-service-1  |   File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+notification-service-1  |   File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+notification-service-1  |   File "/app/main.py", line 16, in <module>
+notification-service-1  |     from database import init_db, get_db, close_db
+notification-service-1  |   File "/app/database.py", line 7, in <module>
+notification-service-1  |     from config import settings
+notification-service-1  |   File "/app/config.py", line 32, in <module>
+notification-service-1  |     settings = Settings()
+notification-service-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/main.py", line 71, in __init__     
+notification-service-1  |     super().__init__(
+notification-service-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic/main.py", line 164, in __init__
+notification-service-1  |     __pydantic_self__.__pydantic_validator__.validate_python(data, self_instance=__pydantic_self__)  
+notification-service-1  | pydantic_core._pydantic_core.ValidationError: 6 validation errors for Settings
+notification-service-1  | POSTGRES_USER
+notification-service-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='notification_admin', input_type=str]
+notification-service-1  |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+notification-service-1  | POSTGRES_PASSWORD
+notification-service-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='notification_password_123', input_type=str]
+notification-service-1  |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+notification-service-1  | POSTGRES_SERVER
+notification-service-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='notification-db', input_type=str]
+payment-service-1       |     return asyncio.run(self.serve(sockets=sockets))
+payment-service-1       |   File "/usr/local/lib/python3.10/asyncio/runners.py", line 44, in run
+payment-service-1       |     return loop.run_until_complete(main)
+payment-service-1       |   File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
+payment-service-1       |   File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 69, in serve
+payment-service-1       |     config.load()
+payment-service-1       |   File "/usr/local/lib/python3.10/site-packages/uvicorn/config.py", line 458, in load
+payment-service-1       |     self.loaded_app = import_from_string(self.app)
+payment-service-1       |   File "/usr/local/lib/python3.10/site-packages/uvicorn/importer.py", line 21, in import_from_string 
+payment-service-1       |     module = importlib.import_module(module_str)
+payment-service-1       |   File "/usr/local/lib/python3.10/importlib/__init__.py", line 126, in import_module
+payment-service-1       |     return _bootstrap._gcd_import(name[level:], package, level)
+payment-service-1       |   File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+payment-service-1       |   File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+payment-service-1       |   File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+payment-service-1       |   File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+notification-service-1  |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+api-gateway-1           |   File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+payment-service-1       |   File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+payment-service-1       |   File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+payment-service-1       |   File "/app/main.py", line 12, in <module>
+payment-service-1       |     from database import get_db, init_db
+payment-service-1       |   File "/app/database.py", line 9, in <module>
+notification-service-1  | POSTGRES_DB
+api-gateway-1           |   File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+api-gateway-1           |   File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+api-gateway-1           |   File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+api-gateway-1           |   File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+api-gateway-1           |   File "/app/main.py", line 16, in <module>
+api-gateway-1           |     from core.config import settings
+api-gateway-1           |   File "/app/core/config.py", line 81, in <module>
+api-gateway-1           |     settings = Settings()
+notification-service-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='notification_db', input_type=str]
+payment-service-1       |     from config import settings
+api-gateway-1           |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/main.py", line 72, in __init__     
+api-gateway-1           |     **__pydantic_self__._settings_build_values(
+api-gateway-1           |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/main.py", line 160, in _settings_build_values
+api-gateway-1           |     return deep_update(*reversed([source() for source in sources]))
+api-gateway-1           |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/main.py", line 160, in <listcomp>  
+api-gateway-1           |     return deep_update(*reversed([source() for source in sources]))
+api-gateway-1           |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/sources.py", line 254, in __call__ 
+api-gateway-1           |     raise SettingsError(
+api-gateway-1           | pydantic_settings.sources.SettingsError: error parsing value for field "CORS_ORIGINS" from source "EnvSettingsSource"
+notification-service-1  |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+payment-service-1       |   File "/app/config.py", line 33, in <module>
+payment-service-1       |     settings = Settings()
+notification-service-1  | KAFKA_CONSUMER_GROUP_ID
+payment-service-1       |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/main.py", line 71, in __init__     
+payment-service-1       |     super().__init__(
+payment-service-1       |   File "/usr/local/lib/python3.10/site-packages/pydantic/main.py", line 164, in __init__
+payment-service-1       |     __pydantic_self__.__pydantic_validator__.validate_python(data, self_instance=__pydantic_self__)  
+payment-service-1       | pydantic_core._pydantic_core.ValidationError: 5 validation errors for Settings
+payment-service-1       | POSTGRES_USER
+payment-service-1       |   Extra inputs are not permitted [type=extra_forbidden, input_value='payment_admin', input_type=str] 
+payment-service-1       |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+payment-service-1       | POSTGRES_PASSWORD
+notification-service-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='notification-group', input_type=str]
+notification-service-1  |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+payment-service-1       |   Extra inputs are not permitted [type=extra_forbidden, input_value='payment_password_123', input_type=str]
+payment-service-1       |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+payment-service-1       | POSTGRES_SERVER
+payment-service-1       |   Extra inputs are not permitted [type=extra_forbidden, input_value='payment-db', input_type=str]    
+payment-service-1       |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+payment-service-1       | POSTGRES_DB
+payment-service-1       |   Extra inputs are not permitted [type=extra_forbidden, input_value='payment_db', input_type=str]    
+payment-service-1       |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+payment-service-1       | KAFKA_PAYMENT_TOPIC
+payment-service-1       |   Extra inputs are not permitted [type=extra_forbidden, input_value='payment_events', input_type=str]
+payment-service-1       |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+notification-service-1  | KAFKA_TOPIC
+notification-service-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='user_events', input_type=str]   
+notification-service-1  |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+notification-service-1  | Traceback (most recent call last):
+notification-service-1  |   File "/usr/local/bin/uvicorn", line 7, in <module>
+notification-service-1  |     sys.exit(main())
+notification-service-1  |   File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1485, in __call__
+notification-service-1  |     return self.main(*args, **kwargs)
+notification-service-1  |   File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1406, in main
+notification-service-1  |     rv = self.invoke(ctx)
+notification-service-1  |   File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1269, in invoke
+notification-service-1  |     return ctx.invoke(self.callback, **ctx.params)
+notification-service-1  |   File "/usr/local/lib/python3.10/site-packages/click/core.py", line 824, in invoke
+notification-service-1  |     return callback(*args, **kwargs)
+notification-service-1  |   File "/usr/local/lib/python3.10/site-packages/uvicorn/main.py", line 418, in main
+notification-service-1  |     run(
+notification-service-1  |   File "/usr/local/lib/python3.10/site-packages/uvicorn/main.py", line 587, in run
+notification-service-1  |     server.run()
+notification-service-1  |   File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 62, in run
+notification-service-1  |     return asyncio.run(self.serve(sockets=sockets))
+notification-service-1  |   File "/usr/local/lib/python3.10/asyncio/runners.py", line 44, in run
+notification-service-1  |     return loop.run_until_complete(main)
+notification-service-1  |   File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
+notification-service-1  |   File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 69, in serve
+notification-service-1  |     config.load()
+notification-service-1  |   File "/usr/local/lib/python3.10/site-packages/uvicorn/config.py", line 458, in load
+notification-service-1  |     self.loaded_app = import_from_string(self.app)
+notification-service-1  |   File "/usr/local/lib/python3.10/site-packages/uvicorn/importer.py", line 21, in import_from_string 
+notification-service-1  |     module = importlib.import_module(module_str)
+notification-service-1  |   File "/usr/local/lib/python3.10/importlib/__init__.py", line 126, in import_module
+notification-service-1  |     return _bootstrap._gcd_import(name[level:], package, level)
+notification-service-1  |   File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+notification-service-1  |   File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+notification-service-1  |   File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+notification-service-1  |   File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+notification-service-1  |   File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+notification-service-1  |   File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+notification-service-1  |   File "/app/main.py", line 16, in <module>
+notification-service-1  |     from database import init_db, get_db, close_db
+notification-service-1  |   File "/app/database.py", line 7, in <module>
+notification-service-1  |     from config import settings
+notification-service-1  |   File "/app/config.py", line 32, in <module>
+notification-service-1  |     settings = Settings()
+notification-service-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/main.py", line 71, in __init__     
+notification-service-1  |     super().__init__(
+notification-service-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic/main.py", line 164, in __init__
+notification-service-1  |     __pydantic_self__.__pydantic_validator__.validate_python(data, self_instance=__pydantic_self__)  
+notification-service-1  | pydantic_core._pydantic_core.ValidationError: 6 validation errors for Settings
+notification-service-1  | POSTGRES_USER
+notification-service-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='notification_admin', input_type=str]
+notification-service-1  |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+notification-service-1  | POSTGRES_PASSWORD
+notification-service-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='notification_password_123', input_type=str]
+notification-service-1  |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+notification-service-1  | POSTGRES_SERVER
+notification-service-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='notification-db', input_type=str]
+notification-service-1  |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+notification-service-1  | POSTGRES_DB
+notification-service-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='notification_db', input_type=str]
+notification-service-1  |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+notification-service-1  | KAFKA_CONSUMER_GROUP_ID
+notification-service-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='notification-group', input_type=str]
+notification-service-1  |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+notification-service-1  | KAFKA_TOPIC
+notification-service-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='user_events', input_type=str]   
+notification-service-1  |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+api-gateway-1           | Traceback (most recent call last):
+api-gateway-1           |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/sources.py", line 252, in __call__
+api-gateway-1           |     field_value = self.prepare_field_value(field_name, field, field_value, value_is_complex)
+api-gateway-1           |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/sources.py", line 435, in prepare_field_value
+api-gateway-1           |     raise e
+api-gateway-1           |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/sources.py", line 432, in prepare_field_value
+api-gateway-1           |     value = self.decode_complex_value(field_name, field, value)
+api-gateway-1           |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/sources.py", line 103, in decode_complex_value
+api-gateway-1           |     return json.loads(value)
+api-gateway-1           |   File "/usr/local/lib/python3.10/json/__init__.py", line 346, in loads
+api-gateway-1           |     return _default_decoder.decode(s)
+api-gateway-1           |   File "/usr/local/lib/python3.10/json/decoder.py", line 337, in decode
+api-gateway-1           |     obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+api-gateway-1           |   File "/usr/local/lib/python3.10/json/decoder.py", line 355, in raw_decode
+api-gateway-1           |     raise JSONDecodeError("Expecting value", s, err.value) from None
+api-gateway-1           | json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+api-gateway-1           |
+api-gateway-1           | The above exception was the direct cause of the following exception:
+api-gateway-1           |
+api-gateway-1           | Traceback (most recent call last):
+api-gateway-1           |   File "/usr/local/bin/uvicorn", line 7, in <module>
+api-gateway-1           |     sys.exit(main())
+api-gateway-1           |   File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1485, in __call__
+api-gateway-1           |     return self.main(*args, **kwargs)
+api-gateway-1           |   File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1406, in main
+api-gateway-1           |     rv = self.invoke(ctx)
+api-gateway-1           |   File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1269, in invoke
+api-gateway-1           |     return ctx.invoke(self.callback, **ctx.params)
+api-gateway-1           |   File "/usr/local/lib/python3.10/site-packages/click/core.py", line 824, in invoke
+api-gateway-1           |     return callback(*args, **kwargs)
+api-gateway-1           |   File "/usr/local/lib/python3.10/site-packages/uvicorn/main.py", line 418, in main
+api-gateway-1           |     run(
+api-gateway-1           |   File "/usr/local/lib/python3.10/site-packages/uvicorn/main.py", line 587, in run
+api-gateway-1           |     server.run()
+api-gateway-1           |   File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 62, in run
+api-gateway-1           |     return asyncio.run(self.serve(sockets=sockets))
+api-gateway-1           |   File "/usr/local/lib/python3.10/asyncio/runners.py", line 44, in run
+api-gateway-1           |     return loop.run_until_complete(main)
+api-gateway-1           |   File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
+api-gateway-1           |   File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 69, in serve
+api-gateway-1           |     config.load()
+api-gateway-1           |   File "/usr/local/lib/python3.10/site-packages/uvicorn/config.py", line 458, in load
+api-gateway-1           |     self.loaded_app = import_from_string(self.app)
+api-gateway-1           |   File "/usr/local/lib/python3.10/site-packages/uvicorn/importer.py", line 21, in import_from_string 
+api-gateway-1           |     module = importlib.import_module(module_str)
+api-gateway-1           |   File "/usr/local/lib/python3.10/importlib/__init__.py", line 126, in import_module
+api-gateway-1           |     return _bootstrap._gcd_import(name[level:], package, level)
+api-gateway-1           |   File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+api-gateway-1           |   File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+api-gateway-1           |   File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+api-gateway-1           |   File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+api-gateway-1           |   File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+api-gateway-1           |   File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+api-gateway-1           |   File "/app/main.py", line 16, in <module>
+api-gateway-1           |     from core.config import settings
+api-gateway-1           |   File "/app/core/config.py", line 81, in <module>
+api-gateway-1           |     settings = Settings()
+api-gateway-1           |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/main.py", line 72, in __init__     
+api-gateway-1           |     **__pydantic_self__._settings_build_values(
+api-gateway-1           |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/main.py", line 160, in _settings_build_values
+api-gateway-1           |     return deep_update(*reversed([source() for source in sources]))
+api-gateway-1           |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/main.py", line 160, in <listcomp>  
+api-gateway-1           |     return deep_update(*reversed([source() for source in sources]))
+api-gateway-1           |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/sources.py", line 254, in __call__ 
+api-gateway-1           |     raise SettingsError(
+api-gateway-1           | pydantic_settings.sources.SettingsError: error parsing value for field "CORS_ORIGINS" from source "EnvSettingsSource"
+campaign-service-1      | Traceback (most recent call last):
+campaign-service-1      |   File "/usr/local/bin/uvicorn", line 7, in <module>
+campaign-service-1      |     sys.exit(main())
+campaign-service-1      |   File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1485, in __call__
+campaign-service-1      |     return self.main(*args, **kwargs)
+campaign-service-1      |   File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1406, in main
+campaign-service-1      |     rv = self.invoke(ctx)
+campaign-service-1      |   File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1269, in invoke
+campaign-service-1      |     return ctx.invoke(self.callback, **ctx.params)
+campaign-service-1      |   File "/usr/local/lib/python3.10/site-packages/click/core.py", line 824, in invoke
+campaign-service-1      |     return callback(*args, **kwargs)
+campaign-service-1      |   File "/usr/local/lib/python3.10/site-packages/uvicorn/main.py", line 416, in main
+campaign-service-1      |     run(
+campaign-service-1      |   File "/usr/local/lib/python3.10/site-packages/uvicorn/main.py", line 587, in run
+campaign-service-1      |     server.run()
+campaign-service-1      |   File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 61, in run
+campaign-service-1      |     return asyncio.run(self.serve(sockets=sockets))
+campaign-service-1      |   File "/usr/local/lib/python3.10/asyncio/runners.py", line 44, in run
+campaign-service-1      |     return loop.run_until_complete(main)
+campaign-service-1      |   File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
+campaign-service-1      |   File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 68, in serve
+campaign-service-1      |     config.load()
+campaign-service-1      |   File "/usr/local/lib/python3.10/site-packages/uvicorn/config.py", line 467, in load
+campaign-service-1      |     self.loaded_app = import_from_string(self.app)
+campaign-service-1      |   File "/usr/local/lib/python3.10/site-packages/uvicorn/importer.py", line 21, in import_from_string 
+campaign-service-1      |     module = importlib.import_module(module_str)
+campaign-service-1      |   File "/usr/local/lib/python3.10/importlib/__init__.py", line 126, in import_module
+campaign-service-1      |     return _bootstrap._gcd_import(name[level:], package, level)
+campaign-service-1      |   File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+campaign-service-1      |   File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+campaign-service-1      |   File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+campaign-service-1      |   File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+campaign-service-1      |   File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+campaign-service-1      |   File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+campaign-service-1      |   File "/app/app/main.py", line 11, in <module>
+campaign-service-1      |     from app.database.database import init_db, close_db
+campaign-service-1      |   File "/app/app/database/database.py", line 8, in <module>
+campaign-service-1      |     settings = get_settings()
+campaign-service-1      |   File "/app/app/core/config.py", line 34, in get_settings
+campaign-service-1      |     return Settings()
+campaign-service-1      |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/main.py", line 71, in __init__     
+campaign-service-1      |     super().__init__(
+campaign-service-1      |   File "/usr/local/lib/python3.10/site-packages/pydantic/main.py", line 164, in __init__
+campaign-service-1      |     __pydantic_self__.__pydantic_validator__.validate_python(data, self_instance=__pydantic_self__)  
+campaign-service-1      | pydantic_core._pydantic_core.ValidationError: 1 validation error for Settings
+campaign-service-1      | redis_url
+campaign-service-1      |   Field required [type=missing, input_value={'database_url': 'postgre...aeger:14268/api/traces'}, input_type=dict]
+campaign-service-1      |     For further information visit https://errors.pydantic.dev/2.5/v/missing
+api-gateway-1 exited with code 1 (restarting)
+campaign-service-1 exited with code 1 (restarting)
+payment-service-1       | Traceback (most recent call last):
+payment-service-1       |   File "/usr/local/bin/uvicorn", line 7, in <module>
+payment-service-1       |     sys.exit(main())
+payment-service-1       |   File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1485, in __call__
+payment-service-1       |     return self.main(*args, **kwargs)
+payment-service-1       |   File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1406, in main
+payment-service-1       |     rv = self.invoke(ctx)
+payment-service-1       |   File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1269, in invoke
+payment-service-1       |     return ctx.invoke(self.callback, **ctx.params)
+payment-service-1       |   File "/usr/local/lib/python3.10/site-packages/click/core.py", line 824, in invoke
+payment-service-1       |     return callback(*args, **kwargs)
+payment-service-1       |   File "/usr/local/lib/python3.10/site-packages/uvicorn/main.py", line 418, in main
+payment-service-1       |     run(
+payment-service-1       |   File "/usr/local/lib/python3.10/site-packages/uvicorn/main.py", line 587, in run
+payment-service-1       |     server.run()
+payment-service-1       |   File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 62, in run
+payment-service-1       |     return asyncio.run(self.serve(sockets=sockets))
+payment-service-1       |   File "/usr/local/lib/python3.10/asyncio/runners.py", line 44, in run
+payment-service-1       |     return loop.run_until_complete(main)
+payment-service-1       |   File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
+payment-service-1       |   File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 69, in serve
+payment-service-1       |     config.load()
+payment-service-1       |   File "/usr/local/lib/python3.10/site-packages/uvicorn/config.py", line 458, in load
+payment-service-1       |     self.loaded_app = import_from_string(self.app)
+payment-service-1       |   File "/usr/local/lib/python3.10/site-packages/uvicorn/importer.py", line 21, in import_from_string 
+payment-service-1       |     module = importlib.import_module(module_str)
+payment-service-1       |   File "/usr/local/lib/python3.10/importlib/__init__.py", line 126, in import_module
+payment-service-1       |     return _bootstrap._gcd_import(name[level:], package, level)
+payment-service-1       |   File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+payment-service-1       |   File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+payment-service-1       |   File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+payment-service-1       |   File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+payment-service-1       |   File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+payment-service-1       |   File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+payment-service-1       |   File "/app/main.py", line 12, in <module>
+payment-service-1       |     from database import get_db, init_db
+payment-service-1       |   File "/app/database.py", line 9, in <module>
+payment-service-1       |     from config import settings
+payment-service-1       |   File "/app/config.py", line 33, in <module>
+payment-service-1       |     settings = Settings()
+payment-service-1       |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/main.py", line 71, in __init__     
+payment-service-1       |     super().__init__(
+payment-service-1       |   File "/usr/local/lib/python3.10/site-packages/pydantic/main.py", line 164, in __init__
+payment-service-1       |     __pydantic_self__.__pydantic_validator__.validate_python(data, self_instance=__pydantic_self__)  
+payment-service-1       | pydantic_core._pydantic_core.ValidationError: 5 validation errors for Settings
+payment-service-1       | POSTGRES_USER
+payment-service-1       |   Extra inputs are not permitted [type=extra_forbidden, input_value='payment_admin', input_type=str] 
+payment-service-1       |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+payment-service-1       | POSTGRES_PASSWORD
+payment-service-1       |   Extra inputs are not permitted [type=extra_forbidden, input_value='payment_password_123', input_type=str]
+payment-service-1       |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+payment-service-1       | POSTGRES_SERVER
+payment-service-1       |   Extra inputs are not permitted [type=extra_forbidden, input_value='payment-db', input_type=str]    
+payment-service-1       |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+payment-service-1       | POSTGRES_DB
+payment-service-1       |   Extra inputs are not permitted [type=extra_forbidden, input_value='payment_db', input_type=str]    
+payment-service-1       |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+payment-service-1       | KAFKA_PAYMENT_TOPIC
+payment-service-1       |   Extra inputs are not permitted [type=extra_forbidden, input_value='payment_events', input_type=str]
+payment-service-1       |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+donation-service-1      | Traceback (most recent call last):
+donation-service-1      |   File "/usr/local/bin/uvicorn", line 7, in <module>
+donation-service-1      |     sys.exit(main())
+donation-service-1      |   File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1485, in __call__
+donation-service-1      |     return self.main(*args, **kwargs)
+donation-service-1      |   File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1406, in main
+donation-service-1      |     rv = self.invoke(ctx)
+donation-service-1      |   File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1269, in invoke
+donation-service-1      |     return ctx.invoke(self.callback, **ctx.params)
+donation-service-1      |   File "/usr/local/lib/python3.10/site-packages/click/core.py", line 824, in invoke
+donation-service-1      |     return callback(*args, **kwargs)
+donation-service-1      |   File "/usr/local/lib/python3.10/site-packages/uvicorn/main.py", line 416, in main
+donation-service-1      |     run(
+donation-service-1      |   File "/usr/local/lib/python3.10/site-packages/uvicorn/main.py", line 587, in run
+donation-service-1      |     server.run()
+donation-service-1      |   File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 61, in run
+donation-service-1      |     return asyncio.run(self.serve(sockets=sockets))
+donation-service-1      |   File "/usr/local/lib/python3.10/asyncio/runners.py", line 44, in run
+donation-service-1      |     return loop.run_until_complete(main)
+donation-service-1      |   File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
+donation-service-1      |   File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 68, in serve
+donation-service-1      |     config.load()
+donation-service-1      |   File "/usr/local/lib/python3.10/site-packages/uvicorn/config.py", line 467, in load
+donation-service-1      |     self.loaded_app = import_from_string(self.app)
+donation-service-1      |   File "/usr/local/lib/python3.10/site-packages/uvicorn/importer.py", line 21, in import_from_string 
+donation-service-1      |     module = importlib.import_module(module_str)
+donation-service-1      |   File "/usr/local/lib/python3.10/importlib/__init__.py", line 126, in import_module
+donation-service-1      |     return _bootstrap._gcd_import(name[level:], package, level)
+donation-service-1      |   File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+donation-service-1      |   File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+donation-service-1      |   File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+donation-service-1      |   File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+donation-service-1      |   File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+donation-service-1      |   File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+donation-service-1      |   File "/app/app/main.py", line 9, in <module>
+donation-service-1      |     from app.database.database import init_db, close_db
+donation-service-1      |   File "/app/app/database/database.py", line 8, in <module>
+donation-service-1      |     settings = get_settings()
+donation-service-1      |   File "/app/app/core/config.py", line 42, in get_settings
+donation-service-1      |     return Settings()
+donation-service-1      |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/main.py", line 71, in __init__     
+donation-service-1      |     super().__init__(
+donation-service-1      |   File "/usr/local/lib/python3.10/site-packages/pydantic/main.py", line 164, in __init__
+donation-service-1      |     __pydantic_self__.__pydantic_validator__.validate_python(data, self_instance=__pydantic_self__)  
+donation-service-1      | pydantic_core._pydantic_core.ValidationError: 1 validation error for Settings
+donation-service-1      | redis_url
+donation-service-1      |   Field required [type=missing, input_value={'database_url': 'postgre...aeger:14268/api/traces'}, input_type=dict]
+donation-service-1      |     For further information visit https://errors.pydantic.dev/2.5/v/missing
+notification-service-1  | Traceback (most recent call last):
+notification-service-1  |   File "/usr/local/bin/uvicorn", line 7, in <module>
+notification-service-1  |     sys.exit(main())
+notification-service-1  |   File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1485, in __call__
+notification-service-1  |     return self.main(*args, **kwargs)
+notification-service-1  |   File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1406, in main
+notification-service-1  |     rv = self.invoke(ctx)
+notification-service-1  |   File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1269, in invoke
+notification-service-1  |     return ctx.invoke(self.callback, **ctx.params)
+notification-service-1  |   File "/usr/local/lib/python3.10/site-packages/click/core.py", line 824, in invoke
+notification-service-1  |     return callback(*args, **kwargs)
+notification-service-1  |   File "/usr/local/lib/python3.10/site-packages/uvicorn/main.py", line 418, in main
+notification-service-1  |     run(
+notification-service-1  |   File "/usr/local/lib/python3.10/site-packages/uvicorn/main.py", line 587, in run
+notification-service-1  |     server.run()
+notification-service-1  |   File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 62, in run
+notification-service-1  |     return asyncio.run(self.serve(sockets=sockets))
+notification-service-1  |   File "/usr/local/lib/python3.10/asyncio/runners.py", line 44, in run
+notification-service-1  |     return loop.run_until_complete(main)
+notification-service-1  |   File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
+notification-service-1  |   File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 69, in serve
+notification-service-1  |     config.load()
+notification-service-1  |   File "/usr/local/lib/python3.10/site-packages/uvicorn/config.py", line 458, in load
+notification-service-1  |     self.loaded_app = import_from_string(self.app)
+notification-service-1  |   File "/usr/local/lib/python3.10/site-packages/uvicorn/importer.py", line 21, in import_from_string 
+notification-service-1  |     module = importlib.import_module(module_str)
+notification-service-1  |   File "/usr/local/lib/python3.10/importlib/__init__.py", line 126, in import_module
+notification-service-1  |     return _bootstrap._gcd_import(name[level:], package, level)
+notification-service-1  |   File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+notification-service-1  |   File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+notification-service-1  |   File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+notification-service-1  |   File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+notification-service-1  |   File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+notification-service-1  |   File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+notification-service-1  |   File "/app/main.py", line 16, in <module>
+notification-service-1  |     from database import init_db, get_db, close_db
+notification-service-1  |   File "/app/database.py", line 7, in <module>
+notification-service-1  |     from config import settings
+notification-service-1  |   File "/app/config.py", line 32, in <module>
+notification-service-1  |     settings = Settings()
+notification-service-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/main.py", line 71, in __init__     
+notification-service-1  |     super().__init__(
+notification-service-1  |   File "/usr/local/lib/python3.10/site-packages/pydantic/main.py", line 164, in __init__
+notification-service-1  |     __pydantic_self__.__pydantic_validator__.validate_python(data, self_instance=__pydantic_self__)  
+notification-service-1  | pydantic_core._pydantic_core.ValidationError: 6 validation errors for Settings
+notification-service-1  | POSTGRES_USER
+notification-service-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='notification_admin', input_type=str]
+notification-service-1  |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+notification-service-1  | POSTGRES_PASSWORD
+notification-service-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='notification_password_123', input_type=str]
+notification-service-1  |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+notification-service-1  | POSTGRES_SERVER
+notification-service-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='notification-db', input_type=str]
+notification-service-1  |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+notification-service-1  | POSTGRES_DB
+notification-service-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='notification_db', input_type=str]
+notification-service-1  |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+notification-service-1  | KAFKA_CONSUMER_GROUP_ID
+notification-service-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='notification-group', input_type=str]
+notification-service-1  |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+notification-service-1  | KAFKA_TOPIC
+notification-service-1  |   Extra inputs are not permitted [type=extra_forbidden, input_value='user_events', input_type=str]   
+notification-service-1  |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+banking-service-1       | Traceback (most recent call last):
+banking-service-1       |   File "/usr/local/bin/uvicorn", line 7, in <module>
+banking-service-1       |     sys.exit(main())
+banking-service-1       |   File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1485, in __call__
+banking-service-1       |     return self.main(*args, **kwargs)
+banking-service-1       |   File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1406, in main
+banking-service-1       |     rv = self.invoke(ctx)
+banking-service-1       |   File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1269, in invoke
+banking-service-1       |     return ctx.invoke(self.callback, **ctx.params)
+banking-service-1       |   File "/usr/local/lib/python3.10/site-packages/click/core.py", line 824, in invoke
+banking-service-1       |     return callback(*args, **kwargs)
+banking-service-1       |   File "/usr/local/lib/python3.10/site-packages/uvicorn/main.py", line 416, in main
+banking-service-1       |     run(
+banking-service-1       |   File "/usr/local/lib/python3.10/site-packages/uvicorn/main.py", line 587, in run
+banking-service-1       |     server.run()
+banking-service-1       |   File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 61, in run
+banking-service-1       |     return asyncio.run(self.serve(sockets=sockets))
+banking-service-1       |   File "/usr/local/lib/python3.10/asyncio/runners.py", line 44, in run
+banking-service-1       |     return loop.run_until_complete(main)
+banking-service-1       |   File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
+banking-service-1       |   File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 68, in serve
+banking-service-1       |     config.load()
+banking-service-1       |   File "/usr/local/lib/python3.10/site-packages/uvicorn/config.py", line 467, in load
+banking-service-1       |     self.loaded_app = import_from_string(self.app)
+banking-service-1       |   File "/usr/local/lib/python3.10/site-packages/uvicorn/importer.py", line 21, in import_from_string 
+banking-service-1       |     module = importlib.import_module(module_str)
+banking-service-1       |   File "/usr/local/lib/python3.10/importlib/__init__.py", line 126, in import_module
+banking-service-1       |     return _bootstrap._gcd_import(name[level:], package, level)
+banking-service-1       |   File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+banking-service-1       |   File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+banking-service-1       |   File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+banking-service-1       |   File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+banking-service-1       |   File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+banking-service-1       |   File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+banking-service-1       |   File "/app/main.py", line 19, in <module>
+banking-service-1       |     from config import settings
+banking-service-1       |   File "/app/config.py", line 29, in <module>
+banking-service-1       |     settings = Settings()
+banking-service-1       |   File "/usr/local/lib/python3.10/site-packages/pydantic_settings/main.py", line 71, in __init__     
+banking-service-1       |     super().__init__(
+banking-service-1       |   File "/usr/local/lib/python3.10/site-packages/pydantic/main.py", line 164, in __init__
+banking-service-1       |     __pydantic_self__.__pydantic_validator__.validate_python(data, self_instance=__pydantic_self__)  
+banking-service-1       | pydantic_core._pydantic_core.ValidationError: 4 validation errors for Settings
+banking-service-1       | POSTGRES_USER
+banking-service-1       |   Extra inputs are not permitted [type=extra_forbidden, input_value='banking_admin', input_type=str] 
+banking-service-1       |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+banking-service-1       | POSTGRES_PASSWORD
+banking-service-1       |   Extra inputs are not permitted [type=extra_forbidden, input_value='banking_password_123', input_type=str]
+banking-service-1       |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+banking-service-1       | POSTGRES_SERVER
+banking-service-1       |   Extra inputs are not permitted [type=extra_forbidden, input_value='banking-db', input_type=str]    
+banking-service-1       |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+banking-service-1       | POSTGRES_DB
+banking-service-1       |   Extra inputs are not permitted [type=extra_forbidden, input_value='banking_db', input_type=str]    
+banking-service-1       |     For further information visit https://errors.pydantic.dev/2.5/v/extra_forbidden
+payment-service-1 exited with code 1 (restarting)
+donation-service-1 exited with code 1 (restarting)
+notification-service-1 exited with code 1 (restarting)
+banking-service-1 exited with code 1 (restarting)
