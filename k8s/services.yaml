@@ -40,6 +40,8 @@ spec:
               value: "userdb"
             - name: POSTGRES_HOST
               value: "user-db"
+            - name: DATABASE_URL
+              value: "postgresql+asyncpg://postgres:secure_password_123@user-db:5432/userdb"  
 
 # --- Campaign Service ---
 ---
@@ -89,6 +91,8 @@ spec:
               value: "campaigndb"
             - name: POSTGRES_HOST
               value: "campaign-db"
+            - name: DATABASE_URL
+              value: "postgresql+asyncpg://postgres:secure_password_123@campaign-db:5432/campaigndb"  
 
 # --- Donation Service ---
 ---
@@ -133,6 +137,8 @@ spec:
               value: "donation_db"
             - name: POSTGRES_HOST
               value: "donation-db"
+            - name: DATABASE_URL
+              value: "postgresql+asyncpg://postgres:secure_password_123@donation-db:5432/donation_db"  
             - name: CAMPAIGN_GRPC_HOST
               value: "campaign-service"
 
@@ -179,6 +185,8 @@ spec:
               value: "payment_db"
             - name: POSTGRES_HOST
               value: "payment-db"
+            - name: DATABASE_URL
+              value: "postgresql+asyncpg://postgres:secure_password_123@payment-db:5432/payment_db"  
 
 # --- Notification Service ---
 ---
@@ -223,6 +231,8 @@ spec:
               value: "notification_db"
             - name: POSTGRES_HOST
               value: "notification-db"
+            - name: DATABASE_URL
+              value: "postgresql+asyncpg://postgres:secure_password_123@notification-db:5432/notification_db"  
 
 # --- Banking Service ---
 ---
@@ -267,6 +277,8 @@ spec:
               value: "banking_db"
             - name: POSTGRES_HOST
               value: "banking-db"
+            - name: DATABASE_URL
+              value: "postgresql+asyncpg://postgres:secure_password_123@banking-db:5432/banking_db"  
 
 # --- API Gateway ---
 ---
