@@ -11,6 +11,12 @@ class Settings(BaseSettings):
     SERVICE_NAME: str = os.getenv("SERVICE_NAME", "payment-service")
     SERVICE_PORT: int = int(os.getenv("SERVICE_PORT", "8003"))
     DEBUG: bool = os.getenv("DEBUG", "false").lower() == "true"
+
+
+    POSTGRES_USER: str
+    POSTGRES_PASSWORD: str
+    POSTGRES_DB: str
+    OTEL_SERVICE_NAME: str = "banking-service"
     
     # Database
     DATABASE_URL: str = os.getenv(
