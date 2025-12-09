@@ -17,7 +17,7 @@ metadata:
   name: user-service
   namespace: careforall
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: user-service
@@ -28,20 +28,13 @@ spec:
     spec:
       containers:
         - name: app
-          image: kdbazizul/fat32-api-avengers-user-service
+          image: kdbazizul/fat32-api-avengers-user-service:latest
           command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8001"]
-          envFrom:
-            - configMapRef:
-                name: app-config
-            - secretRef:
-                name: app-secrets
           env:
-            - name: POSTGRES_DB
-              value: "userdb"
-            - name: POSTGRES_HOST
-              value: "user-db"
             - name: DATABASE_URL
-              value: "postgresql+asyncpg://postgres:secure_password_123@user-db:5432/userdb"  
+              value: "postgresql+asyncpg://postgres:secure_password_123@user-db:5432/userdb"
+            - name: JAEGER_ENDPOINT
+              value: "http://jaeger:14268/api/traces"
 
 # --- Campaign Service ---
 ---
@@ -67,7 +60,7 @@ metadata:
   name: campaign-service
   namespace: careforall
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: campaign-service
@@ -78,25 +71,16 @@ spec:
     spec:
       containers:
         - name: app
-          image: kdbazizul/fat32-api-avengers-campaign-service
-          # Matches command from docker-compose
-          command: ["sh", "-c", "pip install asyncpg && python app/grpc/server.py & uvicorn app.main:app --host 0.0.0.0 --port 8002"]
-          envFrom:
-            - configMapRef:
-                name: app-config
-            - secretRef:
-                name: app-secrets
+          image: kdbazizul/fat32-api-avengers-campaign-service:latest
+          # Hack: Install asyncpg and export PYTHONPATH
+          command: ["sh", "-c", "pip install --user asyncpg && export PYTHONPATH=$PYTHONPATH:$(python -m site --user-site) && python app/grpc/server.py & uvicorn app.main:app --host 0.0.0.0 --port 8002"]
           env:
-            - name: POSTGRES_DB
-              value: "campaigndb"
-            - name: POSTGRES_HOST
-              value: "campaign-db"
             - name: DATABASE_URL
-              value: "postgresql+asyncpg://postgres:secure_password_123@campaign-db:5432/campaigndb" 
+              value: "postgresql+asyncpg://postgres:secure_password_123@campaign-db:5432/campaigndb"
             - name: REDIS_URL
               value: "redis://redis:6379"
             - name: JAEGER_ENDPOINT
-              value: "http://jaeger:14268/api/traces"   
+              value: "http://jaeger:14268/api/traces"
 
 # --- Donation Service ---
 ---
@@ -118,7 +102,7 @@ metadata:
   name: donation-service
   namespace: careforall
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: donation-service
@@ -129,26 +113,20 @@ spec:
     spec:
       containers:
         - name: app
-          image: kdbazizul/fat32-api-avengers-donation-service
-          command: ["sh", "-c", "pip install asyncpg && uvicorn app.main:app --host 0.0.0.0 --port 8004"]
-          envFrom:
-            - configMapRef:
-                name: app-config
-            - secretRef:
-                name: app-secrets
+          image: kdbazizul/fat32-api-avengers-donation-service:latest
+          # Hack: Install asyncpg and export PYTHONPATH
+          command: ["sh", "-c", "pip install --user asyncpg && export PYTHONPATH=$PYTHONPATH:$(python -m site --user-site) && uvicorn app.main:app --host 0.0.0.0 --port 8004"]
           env:
-            - name: POSTGRES_DB
-              value: "donation_db"
-            - name: POSTGRES_HOST
-              value: "donation-db"
             - name: DATABASE_URL
-              value: "postgresql+asyncpg://postgres:secure_password_123@donation-db:5432/donation_db"  
-            - name: CAMPAIGN_GRPC_HOST
-              value: "campaign-service"
+              value: "postgresql+asyncpg://postgres:secure_password_123@donation-db:5432/donation_db"
             - name: KAFKA_BOOTSTRAP_SERVERS
               value: "kafka:9092"
+            - name: CAMPAIGN_GRPC_HOST
+              value: "campaign-service"
+            - name: REDIS_URL
+              value: "redis://redis:6379"
             - name: JAEGER_ENDPOINT
-              value: "http://jaeger:14268/api/traces"  
+              value: "http://jaeger:14268/api/traces"
 
 # --- Payment Service ---
 ---
@@ -170,7 +148,7 @@ metadata:
   name: payment-service
   namespace: careforall
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: payment-service
@@ -181,24 +159,17 @@ spec:
     spec:
       containers:
         - name: app
-          image: kdbazizul/fat32-api-avengers-payment-service
-          command: ["sh", "-c", "pip install asyncpg && uvicorn main:app --host 0.0.0.0 --port 8003"]
-          envFrom:
-            - configMapRef:
-                name: app-config
-            - secretRef:
-                name: app-secrets
+          image: kdbazizul/fat32-api-avengers-payment-service:latest
+          # Hack: Install asyncpg and export PYTHONPATH
+          command: ["sh", "-c", "pip install --user asyncpg && export PYTHONPATH=$PYTHONPATH:$(python -m site --user-site) && uvicorn main:app --host 0.0.0.0 --port 8003"]
           env:
-            - name: POSTGRES_DB
-              value: "payment_db"
-            - name: POSTGRES_HOST
-              value: "payment-db"
             - name: DATABASE_URL
               value: "postgresql+asyncpg://postgres:secure_password_123@payment-db:5432/payment_db"
             - name: KAFKA_BOOTSTRAP_SERVERS
               value: "kafka:9092"
             - name: JAEGER_ENDPOINT
-              value: "http://jaeger:14268/api/traces"    
+              value: "http://jaeger:14268/api/traces"
+            # Removed envFrom to prevent "Extra inputs" error
 
 # --- Notification Service ---
 ---
@@ -220,7 +191,7 @@ metadata:
   name: notification-service
   namespace: careforall
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: notification-service
@@ -231,24 +202,16 @@ spec:
     spec:
       containers:
         - name: app
-          image: kdbazizul/fat32-api-avengers-notification-service
-          command: ["sh", "-c", "pip install asyncpg && uvicorn main:app --host 0.0.0.0 --port 8005"]
-          envFrom:
-            - configMapRef:
-                name: app-config
-            - secretRef:
-                name: app-secrets
+          image: kdbazizul/fat32-api-avengers-notification-service:latest
+          # Hack: Install asyncpg and export PYTHONPATH
+          command: ["sh", "-c", "pip install --user asyncpg && export PYTHONPATH=$PYTHONPATH:$(python -m site --user-site) && uvicorn main:app --host 0.0.0.0 --port 8005"]
           env:
-            - name: POSTGRES_DB
-              value: "notification_db"
-            - name: POSTGRES_HOST
-              value: "notification-db"
             - name: DATABASE_URL
-              value: "postgresql+asyncpg://postgres:secure_password_123@notification-db:5432/notification_db" 
+              value: "postgresql+asyncpg://postgres:secure_password_123@notification-db:5432/notification_db"
             - name: KAFKA_BOOTSTRAP_SERVERS
               value: "kafka:9092"
             - name: JAEGER_ENDPOINT
-              value: "http://jaeger:14268/api/traces"   
+              value: "http://jaeger:14268/api/traces"
 
 # --- Banking Service ---
 ---
@@ -281,22 +244,14 @@ spec:
     spec:
       containers:
         - name: app
-          image: kdbazizul/fat32-api-avengers-banking-service
-          command: ["sh", "-c", "pip install asyncpg && uvicorn main:app --host 0.0.0.0 --port 8006"]
-          envFrom:
-            - configMapRef:
-                name: app-config
-            - secretRef:
-                name: app-secrets
+          image: kdbazizul/fat32-api-avengers-banking-service:latest
+          # Hack: Install asyncpg and export PYTHONPATH
+          command: ["sh", "-c", "pip install --user asyncpg && export PYTHONPATH=$PYTHONPATH:$(python -m site --user-site) && uvicorn main:app --host 0.0.0.0 --port 8006"]
           env:
-            - name: POSTGRES_DB
-              value: "banking_db"
-            - name: POSTGRES_HOST
-              value: "banking-db"
             - name: DATABASE_URL
-              value: "postgresql+asyncpg://postgres:secure_password_123@banking-db:5432/banking_db"  
+              value: "postgresql+asyncpg://postgres:secure_password_123@banking-db:5432/banking_db"
             - name: JAEGER_ENDPOINT
-              value: "http://jaeger:14268/api/traces"  
+              value: "http://jaeger:14268/api/traces"
 
 # --- API Gateway ---
 ---
@@ -318,7 +273,7 @@ metadata:
   name: api-gateway
   namespace: careforall
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: api-gateway
@@ -329,7 +284,7 @@ spec:
     spec:
       containers:
         - name: app
-          image: kdbazizul/fat32-api-avengers-api-gateway
+          image: kdbazizul/fat32-api-avengers-api-gateway:latest
           command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
           envFrom:
             - configMapRef:
