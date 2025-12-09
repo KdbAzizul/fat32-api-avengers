@@ -80,7 +80,7 @@ spec:
         - name: app
           image: kdbazizul/fat32-api-avengers-campaign-service
           # Matches command from docker-compose
-          command: ["sh", "-c", "python app/grpc/server.py & uvicorn app.main:app --host 0.0.0.0 --port 8002"]
+          command: ["sh", "-c", "pip install asyncpg && python app/grpc/server.py & uvicorn app.main:app --host 0.0.0.0 --port 8002"]
           envFrom:
             - configMapRef:
                 name: app-config
@@ -130,7 +130,7 @@ spec:
       containers:
         - name: app
           image: kdbazizul/fat32-api-avengers-donation-service
-          command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8004"]
+          command: ["sh", "-c", "pip install asyncpg && uvicorn app.main:app --host 0.0.0.0 --port 8004"]
           envFrom:
             - configMapRef:
                 name: app-config
@@ -182,7 +182,7 @@ spec:
       containers:
         - name: app
           image: kdbazizul/fat32-api-avengers-payment-service
-          command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8003"]
+          command: ["sh", "-c", "pip install asyncpg && uvicorn main:app --host 0.0.0.0 --port 8003"]
           envFrom:
             - configMapRef:
                 name: app-config
@@ -232,7 +232,7 @@ spec:
       containers:
         - name: app
           image: kdbazizul/fat32-api-avengers-notification-service
-          command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8005"]
+          command: ["sh", "-c", "pip install asyncpg && uvicorn main:app --host 0.0.0.0 --port 8005"]
           envFrom:
             - configMapRef:
                 name: app-config
@@ -282,7 +282,7 @@ spec:
       containers:
         - name: app
           image: kdbazizul/fat32-api-avengers-banking-service
-          command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8006"]
+          command: ["sh", "-c", "pip install asyncpg && uvicorn main:app --host 0.0.0.0 --port 8006"]
           envFrom:
             - configMapRef:
                 name: app-config
