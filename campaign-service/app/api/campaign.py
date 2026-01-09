@@ -68,7 +68,7 @@ async def update_campaign(
     campaign_data: UpdateCampaignRequest,
     db: Session = Depends(get_db)
 ):
-    """Update an existing campaign"""
+    """Update an existing campaign!"""
     try:
         campaign = await CampaignService.update_campaign(db=db, campaign_id=campaign_id, campaign_data=campaign_data)
         if not campaign:

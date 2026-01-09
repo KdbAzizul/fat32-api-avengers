@@ -62,7 +62,7 @@ async def create_donation(
                 )
             
             logger.info(
-                "Campaign validation successful",
+                "Campaign validation successful!",
                 campaign_id=donation_data.campaign_id,
                 message=campaign_status["message"]
             )

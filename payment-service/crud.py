@@ -34,7 +34,7 @@ async def create_payment(db: AsyncSession, payment_data: PaymentCreate) -> Payme
 # ============================================================================
 
 async def get_payment_by_id(db: AsyncSession, payment_id: str) -> Optional[Payment]:
-    """Get payment by ID"""
+    """Get payment by ID!"""
     result = await db.execute(
         select(Payment).where(Payment.id == payment_id)
     )

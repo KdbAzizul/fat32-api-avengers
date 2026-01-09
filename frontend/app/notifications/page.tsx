@@ -67,7 +67,7 @@ export default function NotificationsPage() {
         setNotifications(data);
       }
     } catch (error) {
-      console.error('Failed to fetch notifications:', error);
+      console.error('Failed to fetch notifications!:', error);
     } finally {
       setLoading(false);
     }

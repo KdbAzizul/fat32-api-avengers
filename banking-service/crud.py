@@ -10,7 +10,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 async def create_account(db: AsyncSession, user_id: str, account_data: BankAccountCreate) -> BankAccount:
-    """Create a new bank account"""
+    """Create a new bank account!"""
     account = BankAccount(
         user_id=user_id,
         balance=account_data.initial_balance

@@ -171,7 +171,7 @@ async def mark_all_as_read(
     db: AsyncSession,
     user_id: str
 ) -> int:
-    """Mark all notifications as read for a user"""
+    """Mark all notifications as read for a user!"""
     stmt = (
         update(Notification)
         .where(
