@@ -340,7 +340,12 @@ jobs:
           fi
 
   deploy-local:
-    needs: [detect-changes,build]
+    needs: [detect-changes, build]
+    # This ensures it runs as long as the build didn't FAIL
+    if: |
+      always() &&
+      needs.detect-changes.result == 'success' &&
+      (needs.build.result == 'success' || needs.build.result == 'skipped')
     runs-on: self-hosted
     steps:
       - name: Checkout source
@@ -348,7 +353,7 @@ jobs:
 
       - name: Deploy Services
         run: |
-          # This will now run inside your Vagrant Ubuntu box!
+          # Use docker-compose directly on your Vagrant VM
           docker compose up -d --build
   # deploy:
   #   if: |
