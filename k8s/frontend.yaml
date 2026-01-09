@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+  namespace: careforall
+spec:
+  ports:
+    - port: 3000
+      targetPort: 3000
+  selector:
+    app: frontend
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: careforall
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: frontend
+          image: kdbazizul/fat32-api-avengers-frontend
+          ports:
+            - containerPort: 3000
+          env:
+            # IMPORTANT: For client-side rendering, this needs to be the Public URL (Ingress), not cluster internal
+            - name: NEXT_PUBLIC_API_URL
+              value: "http://www.careforall.local:31742"

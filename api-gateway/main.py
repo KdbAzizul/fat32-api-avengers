@@ -192,7 +192,7 @@ async def register(request: Request):
         else:
             raise HTTPException(
                 status_code=response.status_code,
-                detail=response.json().get("detail", "Registration failed")
+                detail=response.json().get("detail", "Registration failed!")
             )
     
     except httpx.RequestError as e:

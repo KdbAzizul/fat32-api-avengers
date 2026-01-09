@@ -1,0 +1,77 @@
+# --- Jaeger ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jaeger
+  namespace: careforall
+spec:
+  ports:
+    - name: query
+      port: 16686
+    - name: otlp-grpc
+      port: 4317
+  selector:
+    app: jaeger
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jaeger
+  namespace: careforall
+spec:
+  selector:
+    matchLabels:
+      app: jaeger
+  template:
+    metadata:
+      labels:
+        app: jaeger
+    spec:
+      containers:
+        - name: jaeger
+          image: jaegertracing/all-in-one:latest
+          ports:
+            - containerPort: 16686
+            - containerPort: 4317
+          env:
+            - name: COLLECTOR_OTLP_ENABLED
+              value: "true"
+
+# --- Grafana ---
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana
+  namespace: careforall
+spec:
+  ports:
+    - port: 3000
+  selector:
+    app: grafana
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana
+  namespace: careforall
+spec:
+  selector:
+    matchLabels:
+      app: grafana
+  template:
+    metadata:
+      labels:
+        app: grafana
+    spec:
+      containers:
+        - name: grafana
+          image: grafana/grafana:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: GF_SECURITY_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: GRAFANA_ADMIN_PASSWORD

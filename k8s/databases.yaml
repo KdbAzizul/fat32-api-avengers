@@ -1,0 +1,280 @@
+# --- User DB ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-db
+  namespace: careforall
+spec:
+  ports:
+    - port: 5432
+  selector:
+    app: user-db
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-db
+  namespace: careforall
+spec:
+  selector:
+    matchLabels:
+      app: user-db
+  template:
+    metadata:
+      labels:
+        app: user-db
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:15-alpine
+          envFrom:
+             - configMapRef:
+                 name: app-config
+             - secretRef:
+                 name: app-secrets
+          env:
+            - name: POSTGRES_DB
+              value: userdb
+          volumeMounts:
+            - name: db-data
+              mountPath: /var/lib/postgresql/data
+              subPath: user-data  # <--- CRITICAL: Keeps user data separate
+      volumes:
+        - name: db-data
+          persistentVolumeClaim:
+            claimName: shared-db-pvc # <--- Pointing to the SINGLE shared claim
+
+# --- Campaign DB ---
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: campaign-db
+  namespace: careforall
+spec:
+  ports:
+    - port: 5432
+  selector:
+    app: campaign-db
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: campaign-db
+  namespace: careforall
+spec:
+  selector:
+    matchLabels:
+      app: campaign-db
+  template:
+    metadata:
+      labels:
+        app: campaign-db
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:15-alpine
+          envFrom:
+             - configMapRef:
+                 name: app-config
+             - secretRef:
+                 name: app-secrets
+          env:
+            - name: POSTGRES_DB
+              value: campaigndb
+          volumeMounts:
+            - name: db-data
+              mountPath: /var/lib/postgresql/data
+              subPath: campaign-data # <--- Different subPath
+      volumes:
+        - name: db-data
+          persistentVolumeClaim:
+            claimName: shared-db-pvc
+
+# --- Donation DB ---
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: donation-db
+  namespace: careforall
+spec:
+  ports:
+    - port: 5432
+  selector:
+    app: donation-db
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: donation-db
+  namespace: careforall
+spec:
+  selector:
+    matchLabels:
+      app: donation-db
+  template:
+    metadata:
+      labels:
+        app: donation-db
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:15-alpine
+          envFrom:
+             - configMapRef:
+                 name: app-config
+             - secretRef:
+                 name: app-secrets
+          env:
+            - name: POSTGRES_DB
+              value: donation_db
+          volumeMounts:
+            - name: db-data
+              mountPath: /var/lib/postgresql/data
+              subPath: donation-data # <--- Different subPath
+      volumes:
+        - name: db-data
+          persistentVolumeClaim:
+            claimName: shared-db-pvc
+
+# --- Payment DB ---
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: payment-db
+  namespace: careforall
+spec:
+  ports:
+    - port: 5432
+  selector:
+    app: payment-db
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment-db
+  namespace: careforall
+spec:
+  selector:
+    matchLabels:
+      app: payment-db
+  template:
+    metadata:
+      labels:
+        app: payment-db
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:15-alpine
+          envFrom:
+             - configMapRef:
+                 name: app-config
+             - secretRef:
+                 name: app-secrets
+          env:
+            - name: POSTGRES_DB
+              value: payment_db
+          volumeMounts:
+            - name: db-data
+              mountPath: /var/lib/postgresql/data
+              subPath: payment-data # <--- Different subPath
+      volumes:
+        - name: db-data
+          persistentVolumeClaim:
+            claimName: shared-db-pvc
+
+# --- Banking DB ---
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: banking-db
+  namespace: careforall
+spec:
+  ports:
+    - port: 5432
+  selector:
+    app: banking-db
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: banking-db
+  namespace: careforall
+spec:
+  selector:
+    matchLabels:
+      app: banking-db
+  template:
+    metadata:
+      labels:
+        app: banking-db
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:15-alpine
+          envFrom:
+             - configMapRef:
+                 name: app-config
+             - secretRef:
+                 name: app-secrets
+          env:
+            - name: POSTGRES_DB
+              value: banking_db
+          volumeMounts:
+            - name: db-data
+              mountPath: /var/lib/postgresql/data
+              subPath: banking-data # <--- Different subPath
+      volumes:
+        - name: db-data
+          persistentVolumeClaim:
+            claimName: shared-db-pvc
+
+# --- Notification DB ---
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: notification-db
+  namespace: careforall
+spec:
+  ports:
+    - port: 5432
+  selector:
+    app: notification-db
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notification-db
+  namespace: careforall
+spec:
+  selector:
+    matchLabels:
+      app: notification-db
+  template:
+    metadata:
+      labels:
+        app: notification-db
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:15-alpine
+          envFrom:
+             - configMapRef:
+                 name: app-config
+             - secretRef:
+                 name: app-secrets
+          env:
+            - name: POSTGRES_DB
+              value: notification_db
+          volumeMounts:
+            - name: db-data
+              mountPath: /var/lib/postgresql/data
+              subPath: notification-data # <--- Different subPath
+      volumes:
+        - name: db-data
+          persistentVolumeClaim:
+            claimName: shared-db-pvc
