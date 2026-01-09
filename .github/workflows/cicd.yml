@@ -354,7 +354,7 @@ jobs:
       - name: Deploy Services
         run: |
           # Use docker-compose directly on your Vagrant VM
-          docker compose up -d --build
+          docker-compose up -d --build
   # deploy:
   #   if: |
   #     always() &&
