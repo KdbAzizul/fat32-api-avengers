@@ -329,7 +329,7 @@ async def proxy_request(service_name: str, path: str, request: Request, credenti
     
     except httpx.TimeoutException:
         circuit_breaker.record_failure(service_name)
-        raise HTTPException(status_code=504, detail="Gateway timeout!")
+        raise HTTPException(status_code=504, detail="Gateway timeout!!")
     
     except httpx.RequestError as e:
         circuit_breaker.record_failure(service_name)

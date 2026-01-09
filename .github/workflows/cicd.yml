@@ -339,7 +339,17 @@ jobs:
             cd ..
           fi
 
+  deploy-local:
+    needs: [detect-changes,build]
+    runs-on: self-hosted
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
 
+      - name: Deploy Services
+        run: |
+          # This will now run inside your Vagrant Ubuntu box!
+          docker compose up -d --build
   # deploy:
   #   if: |
   #     always() &&
