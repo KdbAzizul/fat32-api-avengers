@@ -1,0 +1,66 @@
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+  filename: /tmp/positions.yaml
+
+clients:
+  - url: http://careforall-loki:3100/loki/api/v1/push
+
+scrape_configs:
+  - job_name: docker
+    docker_sd_configs:
+      - host: unix:///var/run/docker.sock
+        refresh_interval: 5s
+    relabel_configs:
+      - source_labels: ['__meta_docker_container_name']
+        regex: '/(.*)'
+        target_label: 'container'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# server:
+#   http_listen_port: 9080
+#   grpc_listen_port: 0
+
+# positions:
+#   filename: /tmp/positions.yaml
+
+# clients:
+#   - url: http://loki:3100/loki/api/v1/push
+
+# scrape_configs:
+#   - job_name: docker-logs
+#     docker_sd_configs: # if I use this then I have to use docker.sock in docker compose-> /var/run/docker.sock
+#       - host: unix:///var/run/docker.sock
+#         refresh_interval: 5s
+
+#     relabel_configs:
+#       - source_labels: ['__meta_docker_container_name']
+#         regex: '/(.*)'
+#         target_label: container
+
+#       - source_labels: ['__meta_docker_container_image']
+#         target_label: image
+
+#       - source_labels: ['__meta_docker_container_label_com_docker_compose_service']
+#         target_label: service

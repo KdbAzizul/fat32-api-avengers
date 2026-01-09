@@ -1,0 +1,53 @@
+global:
+  scrape_interval: 5s
+  evaluation_interval: 5s
+
+scrape_configs:
+
+  # =========================
+  # PROMETHEUS SELF
+  # =========================
+  - job_name: "prometheus"
+    static_configs:
+      - targets: ["prometheus:9090"]
+
+  # =========================
+  # FASTAPI MICROSERVICES
+  # =========================
+  - job_name: "fastapi-services"
+    metrics_path: /metrics
+    static_configs:
+      - targets:
+          - user-service:8001
+          - campaign-service:8002
+          - donation-service:8004
+          - payment-service:8003
+          - banking-service:8006
+          - notification-service:8005
+          - api-gateway:8000
+
+    # metric_relabel_configs:
+    #   # Action 1: If 'handler' exists, copy its value to 'uri'
+    #   - source_labels: [handler]
+    #     target_label: uri
+    #     action: replace
+    #     regex: (.+)
+
+    #   # Action 2: If 'endpoint' exists, copy its value to 'uri'
+    #   - source_labels: [endpoint]
+    #     target_label: uri
+    #     action: replace
+    #     regex: (.+)
+      
+    #   # Action 3: If 'route' exists, copy its value to 'uri'
+    #   - source_labels: [route]
+    #     target_label: uri
+    #     action: replace
+    #     regex: (.+)
+
+  # =========================
+  # REDIS (later via exporter)
+  # =========================
+  # - job_name: "redis"
+  #   static_configs:
+  #     - targets: ["redis-exporter:9121"]

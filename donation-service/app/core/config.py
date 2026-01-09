@@ -1,0 +1,42 @@
+from pydantic_settings import BaseSettings
+from functools import lru_cache
+import os
+from pathlib import Path
+
+class Settings(BaseSettings):
+    # Database
+    database_url: str
+    
+    # App
+    app_name: str = "Donation Service API"
+    debug: bool = False
+    service_name: str = "donation-service"
+    
+    # gRPC Services
+    campaign_grpc_url: str = "campaign-service:50051"
+    
+    # Kafka
+    kafka_bootstrap_servers: str
+    kafka_topic_donation_created: str = "donation_created"
+    
+    # Redis
+    redis_url: str
+    redis_password: str = ""
+    
+    # Tracing
+    jaeger_endpoint: str
+    
+    class Config:
+        # Look for .env.local file in the donation-service directory
+        env_file = os.path.join(Path(__file__).parent.parent.parent, ".env.local")
+        case_sensitive = False
+        extra = "ignore"  # Ignore extra fields from env file
+        
+    def __post_init__(self):
+        """Validate critical settings on startup"""
+        if not self.database_url:
+            raise ValueError("DATABASE_URL environment variable is required")
+
+@lru_cache()
+def get_settings():
+    return Settings()

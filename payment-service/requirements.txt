@@ -1,0 +1,30 @@
+# Payment Service Dependencies
+
+fastapi==0.109.0
+uvicorn[standard]==0.27.0
+sqlalchemy==2.0.25
+asyncpg==0.29.0
+pydantic==2.5.3
+pydantic-settings==2.1.0
+python-dotenv==1.0.0
+
+# HTTP Client
+httpx==0.27.0
+
+# Kafka
+confluent-kafka==2.3.0
+
+# HTTP Client
+aiohttp==3.9.1
+
+# Monitoring
+prometheus-fastapi-instrumentator
+
+# Distributed Tracing
+opentelemetry-api==1.21.0
+opentelemetry-sdk==1.21.0
+opentelemetry-instrumentation-fastapi==0.42b0
+opentelemetry-instrumentation-sqlalchemy==0.42b0
+opentelemetry-instrumentation-httpx==0.42b0
+opentelemetry-exporter-jaeger-thrift==1.21.0
+structlog==23.2.0

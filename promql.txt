@@ -1,0 +1,48 @@
+Traffic:
+
+1.Top 5 busiest API Endpoints
+topk(5, sum(rate(http_requests_total[5m])) by (handler))
+
+2.Requests Per Second by Service
+sum(rate(http_requests_total[5m])) by (instance)
+
+
+Error:
+
+1.Error rate per service
+sum(rate(http_requests_total{status_code=~"4.."}[5m])) by (instance)
+
+2.Global Error Rate
+sum(rate(http_requests_total{status_code=~"5.."}[5m])) / sum(rate(http_requests_total[5m])) * 100
+
+3.Error rate by endpoints
+sum by (handler) (rate(http_requests_total{status=~"5.*", job="fastapi-services"}[5m])) 
+
+4.Error rate by endpoints & service
+sum by (instance, handler) (
+  rate(http_requests_total{status=~"5.*", job="fastapi-services"}[5m])
+)
+
+Latency:
+
+1.avg response time
+sum(rate(http_request_duration_seconds_sum[5m])) / sum(rate(http_request_duration_seconds_count[5m]))
+
+2.95th Percentile Latency per service
+histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket[5m])) by (le, instance))
+
+3.P99 Latency per Endpoint
+histogram_quantile(0.99, 
+  sum by (le,handler) (rate(http_server_requests_seconds_bucket{job="fastapi-services"}[5m]))
+)
+
+Resource Usage:
+
+1.Memory Usage
+process_resident_memory_bytes{job="fastapi-services"}
+
+2.CPU Usage
+rate(process_cpu_seconds_total{job="fastapi-services"}[1m])
+
+3.Up time per service
+avg_over_time(up{job="fastapi-services"}[24h]) * 100

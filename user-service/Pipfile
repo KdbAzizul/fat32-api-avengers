@@ -1,0 +1,21 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+fastapi = "==0.109.0"
+uvicorn = {extras = ["standard"], version = "==0.27.0"}
+sqlalchemy = "==2.0.25"
+asyncpg = "==0.29.0"
+alembic = "==1.13.1"
+passlib = {extras = ["bcrypt"], version = "==1.7.4"}
+pwdlib = {extras = ["argon2"], version = "*"}
+pydantic-settings = "==2.1.0"
+pydantic = {extras = ["email"], version = "==2.5.3"}
+python-dotenv = "==1.0.0"
+
+[dev-packages]
+
+[requires]
+python_version = "3.12"

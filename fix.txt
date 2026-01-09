@@ -1,0 +1,6 @@
+1. port unavailable problem:
+net stop winnat
+docker-compose up -d  
+net start winnat
+
+
