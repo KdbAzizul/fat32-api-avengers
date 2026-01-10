@@ -35,7 +35,7 @@ async def check_balance(db: AsyncSession, user_id: str, amount: Decimal) -> tupl
     account = await get_account_by_user_id(db, user_id)
     
     if not account:
-        return False, "Account not found"
+        return False, "Account not found!"
     
     if account.balance < amount:
         return False, f"Insufficient balance. Available: {account.balance}, Required: {amount}"

@@ -39,7 +39,7 @@ async def create_user(db: AsyncSession, user_data: UserCreate) -> User:
 # ============================================================================
 
 async def get_user_by_id(db: AsyncSession, user_id: str) -> Optional[User]:
-    """Get user by ID!"""
+    """Get user by ID!!"""
     result = await db.execute(
         select(User).where(User.id == user_id)
     )

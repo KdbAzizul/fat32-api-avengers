@@ -72,7 +72,7 @@ async def update_campaign(
     try:
         campaign = await CampaignService.update_campaign(db=db, campaign_id=campaign_id, campaign_data=campaign_data)
         if not campaign:
-            raise HTTPException(status_code=404, detail="Campaign not found")
+            raise HTTPException(status_code=404, detail="Campaign not found!")
         return campaign
     except HTTPException:
         raise

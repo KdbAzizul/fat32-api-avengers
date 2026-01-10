@@ -70,7 +70,7 @@ async def create_donation(
             sys.stdout.flush()
         
         # Step 2: Create donation in database with INITIATED status
-        print(f"[API] 💾 Creating donation in database...")
+        print(f"[API] 💾 Creating donation in database...!")
         sys.stdout.flush()
         
         donation, db_donation = DonationService.create_donation(

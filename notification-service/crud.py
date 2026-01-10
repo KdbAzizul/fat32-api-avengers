@@ -232,7 +232,7 @@ async def get_unread_count(
     db: AsyncSession,
     user_id: str
 ) -> int:
-    """Get count of unread notifications for a user!"""
+    """Get count of unread notifications for a user!!"""
     query = select(func.count(Notification.id)).where(
         Notification.user_id == user_id,
         Notification.read_at.is_(None),

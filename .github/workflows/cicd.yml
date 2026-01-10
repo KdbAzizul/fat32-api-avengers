@@ -270,99 +270,152 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+
       - name: Build and Push Changed Services Only
         run: |
           IMAGE_TAG=${{ github.sha }}
+          DOCKER_USER=${{ secrets.DOCKERHUB_USERNAME }}
 
-          # Build only changed services
-          if [ "${{ needs.detect-changes.outputs.user-service }}" == "true" ]; then
-            echo "Building user-service..."
-            cd user-service
-            docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/user-service:$IMAGE_TAG .
-            docker push ${{ secrets.DOCKERHUB_USERNAME }}/user-service:$IMAGE_TAG
-            docker push ${{ secrets.DOCKERHUB_USERNAME }}/user-service:latest
+          # Function to build and push a service with both SHA and 'latest' tags
+          build_and_push() {
+            local service_name=$1
+            echo "Building $service_name..."
+            cd $service_name
+            # Build with two -t flags to apply both tags
+            docker build -t $DOCKER_USER/$service_name:$IMAGE_TAG -t $DOCKER_USER/$service_name:latest .
+            
+            # Push both tags simultaneously
+            docker push $DOCKER_USER/$service_name:$IMAGE_TAG
+            docker push $DOCKER_USER/$service_name:latest
             cd ..
+          }
+
+          # Build only changed services using the new function
+          if [ "${{ needs.detect-changes.outputs.user-service }}" == "true" ]; then
+            build_and_push user-service
           fi
 
           if [ "${{ needs.detect-changes.outputs.api-gateway }}" == "true" ]; then
-            echo "Building api-gateway..."
-            cd api-gateway
-            docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/api-gateway:$IMAGE_TAG .
-            docker push ${{ secrets.DOCKERHUB_USERNAME }}/api-gateway:$IMAGE_TAG
-            docker push ${{ secrets.DOCKERHUB_USERNAME }}/api-gateway:latest
-            cd ..
+            build_and_push api-gateway
           fi
 
           if [ "${{ needs.detect-changes.outputs.campaign-service }}" == "true" ]; then
-            echo "Building campaign-service..."
-            cd campaign-service
-            docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/campaign-service:$IMAGE_TAG .
-            docker push ${{ secrets.DOCKERHUB_USERNAME }}/campaign-service:$IMAGE_TAG
-            docker push ${{ secrets.DOCKERHUB_USERNAME }}/campaign-service:latest
-            cd ..
+            build_and_push campaign-service
           fi
 
           if [ "${{ needs.detect-changes.outputs.donation-service }}" == "true" ]; then
-            echo "Building donation-service..."
-            cd donation-service
-            docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/donation-service:$IMAGE_TAG .
-            docker push ${{ secrets.DOCKERHUB_USERNAME }}/donation-service:$IMAGE_TAG
-            docker push ${{ secrets.DOCKERHUB_USERNAME }}/donation-service:latest
-            cd ..
+            build_and_push donation-service
           fi
 
           if [ "${{ needs.detect-changes.outputs.banking-service }}" == "true" ]; then
-            echo "Building banking-service..."
-            cd banking-service
-            docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/banking-service:$IMAGE_TAG .
-            docker push ${{ secrets.DOCKERHUB_USERNAME }}/banking-service:$IMAGE_TAG
-            docker push ${{ secrets.DOCKERHUB_USERNAME }}/banking-service:latest
-            cd ..
+            build_and_push banking-service
           fi
 
           if [ "${{ needs.detect-changes.outputs.payment-service }}" == "true" ]; then
-            echo "Building payment-service..."
-            cd payment-service
-            docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/payment-service:$IMAGE_TAG .
-            docker push ${{ secrets.DOCKERHUB_USERNAME }}/payment-service:$IMAGE_TAG
-            docker push ${{ secrets.DOCKERHUB_USERNAME }}/payment-service:latest
-            cd ..
+            build_and_push payment-service
           fi
 
           if [ "${{ needs.detect-changes.outputs.notification-service }}" == "true" ]; then
-            echo "Building notification-service..."
-            cd notification-service
-            docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/notification-service:$IMAGE_TAG .
-            docker push ${{ secrets.DOCKERHUB_USERNAME }}/notification-service:$IMAGE_TAG
-            docker push ${{ secrets.DOCKERHUB_USERNAME }}/notification-service:latest
-            cd ..
+            build_and_push notification-service
           fi
 
           if [ "${{ needs.detect-changes.outputs.frontend }}" == "true" ]; then
-            echo "Building frontend..."
-            cd frontend
-            docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/frontend:$IMAGE_TAG .
-            docker push ${{ secrets.DOCKERHUB_USERNAME }}/frontend:$IMAGE_TAG
-            docker push ${{ secrets.DOCKERHUB_USERNAME }}/frontend:latest
-            cd ..
+            build_and_push frontend
           fi
 
-  deploy-local:
-    needs: [detect-changes, build]
-    # This ensures it runs as long as the build didn't FAIL
-    if: |
-      always() &&
-      needs.detect-changes.result == 'success' &&
-      (needs.build.result == 'success' || needs.build.result == 'skipped')
-    runs-on: self-hosted
-    steps:
-      - name: Checkout source
-        uses: actions/checkout@v3
+      # - name: Build and Push Changed Services Only
+      #   run: |
+      #     IMAGE_TAG=${{ github.sha }}
 
-      - name: Deploy Services
-        run: |
-          # Use docker-compose directly on your Vagrant VM
-          docker-compose up -d --build
+      #     # Build only changed services
+      #     if [ "${{ needs.detect-changes.outputs.user-service }}" == "true" ]; then
+      #       echo "Building user-service..."
+      #       cd user-service
+      #       docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/user-service:$IMAGE_TAG .
+      #       docker push ${{ secrets.DOCKERHUB_USERNAME }}/user-service:$IMAGE_TAG
+      #       docker push ${{ secrets.DOCKERHUB_USERNAME }}/user-service:latest
+      #       cd ..
+      #     fi
+
+      #     if [ "${{ needs.detect-changes.outputs.api-gateway }}" == "true" ]; then
+      #       echo "Building api-gateway..."
+      #       cd api-gateway
+      #       docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/api-gateway:$IMAGE_TAG .
+      #       docker push ${{ secrets.DOCKERHUB_USERNAME }}/api-gateway:$IMAGE_TAG
+      #       docker push ${{ secrets.DOCKERHUB_USERNAME }}/api-gateway:latest
+      #       cd ..
+      #     fi
+
+      #     if [ "${{ needs.detect-changes.outputs.campaign-service }}" == "true" ]; then
+      #       echo "Building campaign-service..."
+      #       cd campaign-service
+      #       docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/campaign-service:$IMAGE_TAG .
+      #       docker push ${{ secrets.DOCKERHUB_USERNAME }}/campaign-service:$IMAGE_TAG
+      #       docker push ${{ secrets.DOCKERHUB_USERNAME }}/campaign-service:latest
+      #       cd ..
+      #     fi
+
+      #     if [ "${{ needs.detect-changes.outputs.donation-service }}" == "true" ]; then
+      #       echo "Building donation-service..."
+      #       cd donation-service
+      #       docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/donation-service:$IMAGE_TAG .
+      #       docker push ${{ secrets.DOCKERHUB_USERNAME }}/donation-service:$IMAGE_TAG
+      #       docker push ${{ secrets.DOCKERHUB_USERNAME }}/donation-service:latest
+      #       cd ..
+      #     fi
+
+      #     if [ "${{ needs.detect-changes.outputs.banking-service }}" == "true" ]; then
+      #       echo "Building banking-service..."
+      #       cd banking-service
+      #       docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/banking-service:$IMAGE_TAG .
+      #       docker push ${{ secrets.DOCKERHUB_USERNAME }}/banking-service:$IMAGE_TAG
+      #       docker push ${{ secrets.DOCKERHUB_USERNAME }}/banking-service:latest
+      #       cd ..
+      #     fi
+
+      #     if [ "${{ needs.detect-changes.outputs.payment-service }}" == "true" ]; then
+      #       echo "Building payment-service..."
+      #       cd payment-service
+      #       docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/payment-service:$IMAGE_TAG .
+      #       docker push ${{ secrets.DOCKERHUB_USERNAME }}/payment-service:$IMAGE_TAG
+      #       docker push ${{ secrets.DOCKERHUB_USERNAME }}/payment-service:latest
+      #       cd ..
+      #     fi
+
+      #     if [ "${{ needs.detect-changes.outputs.notification-service }}" == "true" ]; then
+      #       echo "Building notification-service..."
+      #       cd notification-service
+      #       docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/notification-service:$IMAGE_TAG .
+      #       docker push ${{ secrets.DOCKERHUB_USERNAME }}/notification-service:$IMAGE_TAG
+      #       docker push ${{ secrets.DOCKERHUB_USERNAME }}/notification-service:latest
+      #       cd ..
+      #     fi
+
+      #     if [ "${{ needs.detect-changes.outputs.frontend }}" == "true" ]; then
+      #       echo "Building frontend..."
+      #       cd frontend
+      #       docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/frontend:$IMAGE_TAG .
+      #       docker push ${{ secrets.DOCKERHUB_USERNAME }}/frontend:$IMAGE_TAG
+      #       docker push ${{ secrets.DOCKERHUB_USERNAME }}/frontend:latest
+      #       cd ..
+      #     fi
+
+  # deploy-local:
+  #   needs: [detect-changes, build]
+  #   # This ensures it runs as long as the build didn't FAIL
+  #   if: |
+  #     always() &&
+  #     needs.detect-changes.result == 'success' &&
+  #     (needs.build.result == 'success' || needs.build.result == 'skipped')
+  #   runs-on: self-hosted
+  #   steps:
+  #     - name: Checkout source
+  #       uses: actions/checkout@v3
+
+  #     - name: Deploy Services
+  #       run: |
+  #         # Use docker-compose directly on your Vagrant VM
+  #         docker-compose up -d --build
   # deploy:
   #   if: |
   #     always() &&

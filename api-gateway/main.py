@@ -197,7 +197,7 @@ async def register(request: Request):
     
     except httpx.RequestError as e:
         logger.error(f"Error connecting to user-service: {e}")
-        raise HTTPException(status_code=502, detail="Registration service error!!!!")
+        raise HTTPException(status_code=502, detail="Registration service error!!!!!")
 
 @app.get("/api/v1/auth/me")
 async def get_me(request: Request):
