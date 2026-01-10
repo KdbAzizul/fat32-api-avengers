@@ -41,7 +41,7 @@ async def get_payment_by_id(db: AsyncSession, payment_id: str) -> Optional[Payme
     return result.scalar_one_or_none()
 
 async def get_payment_by_donation_id(db: AsyncSession, donation_id: str) -> Optional[Payment]:
-    """Get payment by donation ID"""
+    """Get payment by donation ID!"""
     result = await db.execute(
         select(Payment).where(Payment.donation_id == donation_id)
     )

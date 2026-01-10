@@ -280,6 +280,7 @@ jobs:
             cd user-service
             docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/user-service:$IMAGE_TAG .
             docker push ${{ secrets.DOCKERHUB_USERNAME }}/user-service:$IMAGE_TAG
+            docker push ${{ secrets.DOCKERHUB_USERNAME }}/user-service:latest
             cd ..
           fi
 
@@ -288,6 +289,7 @@ jobs:
             cd api-gateway
             docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/api-gateway:$IMAGE_TAG .
             docker push ${{ secrets.DOCKERHUB_USERNAME }}/api-gateway:$IMAGE_TAG
+            docker push ${{ secrets.DOCKERHUB_USERNAME }}/api-gateway:latest
             cd ..
           fi
 
@@ -296,6 +298,7 @@ jobs:
             cd campaign-service
             docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/campaign-service:$IMAGE_TAG .
             docker push ${{ secrets.DOCKERHUB_USERNAME }}/campaign-service:$IMAGE_TAG
+            docker push ${{ secrets.DOCKERHUB_USERNAME }}/campaign-service:latest
             cd ..
           fi
 
@@ -304,6 +307,7 @@ jobs:
             cd donation-service
             docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/donation-service:$IMAGE_TAG .
             docker push ${{ secrets.DOCKERHUB_USERNAME }}/donation-service:$IMAGE_TAG
+            docker push ${{ secrets.DOCKERHUB_USERNAME }}/donation-service:latest
             cd ..
           fi
 
@@ -312,6 +316,7 @@ jobs:
             cd banking-service
             docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/banking-service:$IMAGE_TAG .
             docker push ${{ secrets.DOCKERHUB_USERNAME }}/banking-service:$IMAGE_TAG
+            docker push ${{ secrets.DOCKERHUB_USERNAME }}/banking-service:latest
             cd ..
           fi
 
@@ -320,6 +325,7 @@ jobs:
             cd payment-service
             docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/payment-service:$IMAGE_TAG .
             docker push ${{ secrets.DOCKERHUB_USERNAME }}/payment-service:$IMAGE_TAG
+            docker push ${{ secrets.DOCKERHUB_USERNAME }}/payment-service:latest
             cd ..
           fi
 
@@ -328,6 +334,7 @@ jobs:
             cd notification-service
             docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/notification-service:$IMAGE_TAG .
             docker push ${{ secrets.DOCKERHUB_USERNAME }}/notification-service:$IMAGE_TAG
+            docker push ${{ secrets.DOCKERHUB_USERNAME }}/notification-service:latest
             cd ..
           fi
 
@@ -336,6 +343,7 @@ jobs:
             cd frontend
             docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/frontend:$IMAGE_TAG .
             docker push ${{ secrets.DOCKERHUB_USERNAME }}/frontend:$IMAGE_TAG
+            docker push ${{ secrets.DOCKERHUB_USERNAME }}/frontend:latest
             cd ..
           fi
 

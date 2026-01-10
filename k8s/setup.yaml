@@ -33,3 +33,22 @@ data:
   KAFKA_BOOTSTRAP_SERVERS: "kafka:9092"
   ZOOKEEPER_CONNECT: "zookeeper:2181"
   REDIS_HOST: "redis"
+
+---
+apiVersion: v1
+data:
+  .dockerconfigjson: eyJhdXRocyI6eyJodHRwczovL2luZGV4LmRvY2tlci5pby92MS8iOnsidXNlcm5hbWUiOiJrZGJheml6dWwiLCJwYXNzd29yZCI6IkxvdmVnYW1lczIiLCJlbWFpbCI6ImtkYmF6aXp1bEBnbWFpbC5jb20iLCJhdXRoIjoiYTJSaVlYcHBlblZzT2t4dmRtVm5ZVzFsY3pJPSJ9fX0=
+kind: Secret
+metadata:
+  name: regcred
+  namespace: careforall
+type: kubernetes.io/dockerconfigjson
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: default
+  namespace: careforall
+imagePullSecrets:
+- name: regcred

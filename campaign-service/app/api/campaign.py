@@ -90,7 +90,7 @@ async def delete_campaign(
     try:
         success = await CampaignService.delete_campaign(db=db, campaign_id=campaign_id)
         if not success:
-            raise HTTPException(status_code=404, detail="Campaign not found")
+            raise HTTPException(status_code=404, detail="Campaign not found!")
         return None
     except HTTPException:
         raise

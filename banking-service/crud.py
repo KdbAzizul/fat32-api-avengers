@@ -24,7 +24,7 @@ async def create_account(db: AsyncSession, user_id: str, account_data: BankAccou
     return account
 
 async def get_account_by_user_id(db: AsyncSession, user_id: str) -> BankAccount:
-    """Get bank account by user ID"""
+    """Get bank account by user ID!"""
     result = await db.execute(
         select(BankAccount).where(BankAccount.user_id == user_id)
     )

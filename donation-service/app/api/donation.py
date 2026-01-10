@@ -79,7 +79,7 @@ async def create_donation(
         )
         
         # Step 3: Publish donation_created event to Kafka
-        print(f"[API] 📤 Publishing donation_created event to Kafka...")
+        print(f"[API] 📤 Publishing donation_created event to Kafka!...")
         sys.stdout.flush()
         
         await kafka_producer.publish_donation_created({
